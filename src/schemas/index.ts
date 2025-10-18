@@ -2,10 +2,7 @@ import { z } from 'zod'
 
 const FieldSchema = z.object({
   fieldName: z.string(),
-  label: z.string(),
-  fieldType: z.enum(['string', 'number', 'date', 'select']),
-  required: z.boolean().optional(),
-  options: z.array(z.string()).optional().describe('Варианты выбора (для select)'),
+  title: z.string().optional(),
   visible: z.boolean().optional(),
   order: z.number().optional(),
 })
@@ -16,9 +13,10 @@ const ActionSchema = z.object({
   type: z.enum(['create', 'update', 'delete', 'export']).describe('Тип действия (для UI-кнопок)'),
 })
 
-const FilterSchema = z.object({
+export const FilterSchema = z.object({
   field: z.string(),
   type: z.enum(['text', 'select', 'date']),
+  options: z.array(z.string()).optional().describe('Варианты выбора (для select)'),
   label: z.string().optional(),
 })
 
@@ -27,6 +25,7 @@ export const PageConfigSchema = z.object({
   entityKey: z.string(),
   fields: z.array(FieldSchema),
   actions: z.array(ActionSchema).optional(),
-  filters: z.array(FilterSchema).optional(),
   layout: z.enum(['list', 'grid', 'kanban']).optional().describe('Тип отображения карточек'),
+  version: z.string().default('v1'),
+  meta: z.record(z.any(), z.any()).optional(),
 })
