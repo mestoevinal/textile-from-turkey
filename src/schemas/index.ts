@@ -11,7 +11,7 @@ const FieldSchema = z.object({
 const ActionSchema = z.object({
   id: z.string(),
   label: z.string(),
-  type: z.enum(['create', 'update', 'delete', 'export']).describe('Тип действия (для UI-кнопок)'),
+  type: z.enum(['create', 'update', 'delete']).describe('Тип действия (для UI-кнопок)'),
   icon: z.string().optional(),
 })
 
@@ -27,7 +27,7 @@ export const PageConfigSchema = z.object({
   entityKey: z.string(),
   fields: z.array(FieldSchema),
   actions: z.array(ActionSchema).optional(),
-  layout: z.enum(['list', 'grid', 'kanban']).optional().describe('Тип отображения карточек'),
+  layout: z.enum(['list', 'grid']).optional().describe('Тип отображения карточек'),
   version: z.string().default('v1'),
   meta: z.record(z.any(), z.any()).optional(),
 })
