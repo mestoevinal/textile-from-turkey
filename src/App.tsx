@@ -1,7 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { PageRenderer } from './pages/Renderer'
-import { clientData, clientPage } from './stubData/test'
+import './index.css'
 
 export function App() {
-  return <PageRenderer config={clientPage as unknown as any} data={clientData} />
+  return (
+    <div className="min-h-screen bg-blue-200 flex items-center justify-center">
+      <h1 className="text-4xl font-bold text-red-100">
+        Tailwind работает 🎨
+      </h1>
+    </div>
+  )
 }
