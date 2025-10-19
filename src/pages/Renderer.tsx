@@ -18,7 +18,7 @@ export function PageRenderer<T extends Record<string, unknown>>({ config, data }
     <div className="p-4 flex flex-col gap-4">
       {/* Заголовок */}
       <header className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">{pageName}</h1>
+        <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">{pageName}</h1>
 
         {/* Панель действий */}
         {actions && actions.length > 0 && <ActionsBar actions={actions} />}
