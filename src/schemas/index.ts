@@ -23,7 +23,8 @@ const FilterSchema = z.object({
   label: z.string().optional(),
 })
 
-export const PageConfigSchema = z.object({
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const PageConfigSchema = z.object({
   pageName: z.string(),
   entityKey: z.string(),
   fields: z.array(FieldSchema),
@@ -33,3 +34,5 @@ export const PageConfigSchema = z.object({
   version: z.string().default('v1'),
   meta: z.record(z.string(), z.any()).optional(),
 })
+
+export type PageConfig = z.infer<typeof PageConfigSchema>
