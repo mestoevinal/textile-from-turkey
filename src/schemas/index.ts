@@ -3,6 +3,7 @@ import { z } from 'zod'
 const FieldSchema = z.object({
   fieldName: z.string(),
   title: z.string().optional(),
+  fieldType: z.enum(['string', 'number', 'date', 'select']).default('string'),
   visible: z.boolean().optional(),
   order: z.number().optional(),
   defaultValue: z.string().optional(),
@@ -15,10 +16,10 @@ const ActionSchema = z.object({
   icon: z.string().optional(),
 })
 
-export const FilterSchema = z.object({
+const FilterSchema = z.object({
   field: z.string(),
   type: z.enum(['text', 'select', 'date']),
-  options: z.array(z.string()).optional().describe('Варианты выбора (для select)'),
+  options: z.array(z.string()).optional(),
   label: z.string().optional(),
 })
 
@@ -27,7 +28,8 @@ export const PageConfigSchema = z.object({
   entityKey: z.string(),
   fields: z.array(FieldSchema),
   actions: z.array(ActionSchema).optional(),
-  layout: z.enum(['list', 'grid']).optional().describe('Тип отображения карточек'),
+  filters: z.array(FilterSchema).optional(),
+  layout: z.enum(['list', 'grid']).optional(),
   version: z.string().default('v1'),
-  meta: z.record(z.any(), z.any()).optional(),
+  meta: z.record(z.string(), z.any()).optional(),
 })
