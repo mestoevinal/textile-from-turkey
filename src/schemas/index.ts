@@ -9,6 +9,8 @@ const FieldSchema = z.object({
   defaultValue: z.string().optional(),
 })
 
+export type Field = z.infer<typeof FieldSchema>
+
 const ActionSchema = z.object({
   id: z.string(),
   label: z.string(),
