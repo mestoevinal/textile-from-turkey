@@ -5,12 +5,14 @@ const FieldSchema = z.object({
   title: z.string().optional(),
   visible: z.boolean().optional(),
   order: z.number().optional(),
+  defaultValue: z.string().optional(),
 })
 
 const ActionSchema = z.object({
   id: z.string(),
   label: z.string(),
   type: z.enum(['create', 'update', 'delete', 'export']).describe('Тип действия (для UI-кнопок)'),
+  icon: z.string().optional(),
 })
 
 export const FilterSchema = z.object({
