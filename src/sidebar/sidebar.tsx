@@ -56,7 +56,7 @@ const mockOthersItems = [
 ];
 
 export const MenuItem: React.FC<any> = ({ items }: any) => {
-  return <ul className="flex flex-col gap-4">
+  return <ul className="flex flex-col gap-1">
       {items.map((nav: any) => (
         <li key={nav.name}>
           {nav.subItems ? (
