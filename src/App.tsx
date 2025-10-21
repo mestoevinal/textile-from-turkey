@@ -1,9 +1,12 @@
+import { BrowserRouter } from 'react-router-dom'
 import { AppSidebar } from './sidebar/sidebar'
 
 export function App() {
   return (
-    <div>
-     <AppSidebar />
-    </div>
+    <BrowserRouter>
+      <div>
+        <AppSidebar />
+      </div>
+    </BrowserRouter>
   )
 }
