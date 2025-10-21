@@ -56,29 +56,29 @@ const mockOthersItems = [
 ];
 
 export const MenuItem: React.FC<any> = ({ items }: any) => {
-  return <ul className="flex flex-col gap-1">
+  return <ul className="flex flex-col gap-2">
       {items.map((nav: any) => (
         <li key={nav.name}>
           {nav.subItems ? (
-            <div className="menu-item group cursor-pointer justify-start">
-              <span className="menu-item-icon-size">{nav.icon}</span>
-              <span className="menu-item-text">{nav.name}</span>
+            <div className="flex flex-row cursor-pointer justify-start gap-1">
+              <span className="">{nav.icon}</span>
+              <span className="">{nav.name}</span>
               <ChevronDownIcon className="ml-auto w-5 h-5 text-gray-400" />
             </div>
           ) : (
             nav.path && (
-              <Link to={nav.path} className="menu-item group justify-start">
-                <span className="menu-item-icon-size">{nav.icon}</span>
-                <span className="menu-item-text">{nav.name}</span>
+              <Link to={nav.path} className="flex flex-row group justify-start gap-1">
+                <span className="">{nav.icon}</span>
+                <span className="">{nav.name}</span>
               </Link>
             )
           )}
           {nav.subItems && (
             <div className="overflow-hidden mt-2 ml-9">
-              <ul className="space-y-1">
+              <ul>
                 {nav.subItems.map((sub: any) => (
-                  <li key={sub.name}>
-                    <Link to={sub.path} className="menu-dropdown-item">
+                  <li key={sub.name} className="relative flex items-center rounded-lg py-1 text-theme-sm">
+                    <Link to={sub.path} className="">
                       {sub.name}
                     </Link>
                   </li>
@@ -94,7 +94,7 @@ export const MenuItem: React.FC<any> = ({ items }: any) => {
 export const AppSidebar: React.FC = () => {
   return (
     <aside
-      className={'fixed flex flex-col top-0 px-5 left-0 bg-white dark:bg-gray-900 text-gray-900 h-screen border-r border-gray-200 w-[290px]'}
+      className={'fixed flex flex-col top-0 px-5 left-0 bg-white text-gray-900 h-screen border-r border-gray-200 w-[290px]'}
     >
       <div className="py-8 flex justify-center">
         <Link to="/">
