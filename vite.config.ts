@@ -40,5 +40,5 @@ function svgrPlugin(): Plugin {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), svgrPlugin()],
+  plugins: [svgrPlugin(), react()],
 })
