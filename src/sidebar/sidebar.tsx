@@ -12,7 +12,6 @@ import {
   TableIcon,
   UserCircleIcon,
 } from '../icons';
-import { SidebarWidget } from './widget';
 
 const mockNavItems = [
   {
@@ -156,7 +155,6 @@ export const AppSidebar: React.FC = () => {
             </div>
           </div>
         </nav>
-        <SidebarWidget />
       </div>
     </aside>
   );
