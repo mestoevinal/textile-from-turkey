@@ -1,15 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from 'react-router-dom';
 import {
-  BoxCubeIcon,
   CalenderIcon,
   ChevronDownIcon,
   GridIcon,
-  ListIcon,
   PageIcon,
   PieChartIcon,
   PlugInIcon,
-  TableIcon,
   UserCircleIcon,
 } from '../icons';
 
@@ -28,16 +25,6 @@ const mockNavItems = [
     icon: <UserCircleIcon />,
     name: 'User Profile',
     path: '/profile',
-  },
-  {
-    name: 'Forms',
-    icon: <ListIcon />,
-    subItems: [{ name: 'Form Elements', path: '/form-elements' }],
-  },
-  {
-    name: 'Tables',
-    icon: <TableIcon />,
-    subItems: [{ name: 'Basic Tables', path: '/basic-tables' }],
   },
   {
     name: 'Pages',
@@ -59,16 +46,6 @@ const mockOthersItems = [
     ],
   },
   {
-    icon: <BoxCubeIcon />,
-    name: 'UI Elements',
-    subItems: [
-      { name: 'Alerts', path: '/alerts' },
-      { name: 'Avatar', path: '/avatars' },
-      { name: 'Badge', path: '/badge' },
-      { name: 'Buttons', path: '/buttons' },
-    ],
-  },
-  {
     icon: <PlugInIcon />,
     name: 'Authentication',
     subItems: [
@@ -78,10 +55,9 @@ const mockOthersItems = [
   },
 ];
 
-export const AppSidebar: React.FC = () => {
-  const renderMenuItems = (items: any[]) => (
-    <ul className="flex flex-col gap-4">
-      {items.map((nav) => (
+export const MenuItem: React.FC<any> = ({ items }: any) => {
+  return <ul className="flex flex-col gap-4">
+      {items.map((nav: any) => (
         <li key={nav.name}>
           {nav.subItems ? (
             <div className="menu-item group cursor-pointer justify-start">
@@ -113,8 +89,9 @@ export const AppSidebar: React.FC = () => {
         </li>
       ))}
     </ul>
-  );
+}
 
+export const AppSidebar: React.FC = () => {
   return (
     <aside
       className={'fixed flex flex-col top-0 px-5 left-0 bg-white dark:bg-gray-900 text-gray-900 h-screen border-r border-gray-200 w-[290px]'}
@@ -123,21 +100,20 @@ export const AppSidebar: React.FC = () => {
         <Link to="/">
           <img
             className="dark:hidden"
-            src="/images/logo/logo.svg"
+            src="/icons/alert.svg"
             alt="Logo"
             width={150}
             height={40}
           />
           <img
             className="hidden dark:block"
-            src="/images/logo/logo-dark.svg"
+            src="/icons/alert.svg"
             alt="Logo"
             width={150}
             height={40}
           />
         </Link>
       </div>
-
       <div className="flex flex-col overflow-y-auto no-scrollbar">
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
@@ -145,13 +121,13 @@ export const AppSidebar: React.FC = () => {
               <h2 className="mb-4 text-xs uppercase leading-[20px] text-gray-400">
                 Menu
               </h2>
-              {renderMenuItems(mockNavItems)}
+              <MenuItem items={mockNavItems} />
             </div>
             <div>
               <h2 className="mb-4 text-xs uppercase leading-[20px] text-gray-400">
                 Others
               </h2>
-              {renderMenuItems(mockOthersItems)}
+              <MenuItem items={mockOthersItems} />
             </div>
           </div>
         </nav>
