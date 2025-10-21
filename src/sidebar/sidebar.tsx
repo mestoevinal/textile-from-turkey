@@ -96,18 +96,18 @@ export const AppSidebar: React.FC = () => {
     <aside
       className={'fixed flex flex-col top-0 px-5 left-0 bg-white dark:bg-gray-900 text-gray-900 h-screen border-r border-gray-200 w-[290px]'}
     >
-      <div className="py-8 flex justify-start">
+      <div className="py-8 flex justify-center">
         <Link to="/">
           <img
             className="dark:hidden"
-            src="/icons/alert.svg"
+            src="/src/icons/alert.svg"
             alt="Logo"
             width={150}
             height={40}
           />
           <img
             className="hidden dark:block"
-            src="/icons/alert.svg"
+            src="/src/icons/alert.svg"
             alt="Logo"
             width={150}
             height={40}
