@@ -9,6 +9,7 @@ import {
   PlugInIcon,
   UserCircleIcon,
 } from '../icons';
+import { RenderSwitch } from '../components/RenderSwitch';
 
 const mockNavItems = [
   {
@@ -59,22 +60,26 @@ export const MenuItem: React.FC<any> = ({ items }: any) => {
   return <ul className="flex flex-col gap-2">
       {items.map((nav: any) => (
         <li key={nav.name}>
-          {nav.subItems ? (
-            <div className="flex flex-row items-center cursor-pointer justify-start gap-1">
+          <RenderSwitch 
+            condition={Boolean(nav.subItems.length)}
+            whenTrue={
+              <div className="flex flex-row items-center cursor-pointer justify-start gap-1">
               <span>{nav.icon}</span>
               <span>{nav.name}</span>
               <ChevronDownIcon className="ml-auto w-5 h-5 text-gray-400" />
             </div>
-          ) : (
-            nav.path && (
+            }
+            whenFalse={
               <Link to={nav.path} className="flex flex-row items-center justify-start gap-1">
                 <span>{nav.icon}</span>
                 <span>{nav.name}</span>
               </Link>
-            )
-          )}
-          {nav.subItems && (
-            <div className="overflow-hidden mt-2 ml-9">
+            }
+          />
+          <RenderSwitch 
+            condition={Boolean(nav.subItems.length)}
+            whenTrue={
+              <div className="overflow-hidden mt-2 ml-9">
               <ul>
                 {nav.subItems.map((sub: any) => (
                   <li key={sub.name} className="relative flex items-center rounded-lg py-1 text-theme-sm">
@@ -85,7 +90,9 @@ export const MenuItem: React.FC<any> = ({ items }: any) => {
                 ))}
               </ul>
             </div>
-          )}
+            }
+            whenFalse={null}
+          />
         </li>
       ))}
     </ul>
