@@ -69,12 +69,17 @@ const mockOthersItems = [
   },
 ];
 
-export const MenuItem: React.FC<{ items: SidebarMenuItem[] }> = ({ items }: { items: SidebarMenuItem[] }) => {
-  return <ul className="flex flex-col gap-2">
+export const MenuItem: React.FC<{ items: SidebarMenuItem[], title: string }> = ({ items, title }) => {
+  return (
+    <div>
+    <h2 className="mb-4 text-xs uppercase text-gray-400">
+      {title}
+    </h2>
+    <ul className="flex flex-col gap-2">
       {items.map(nav => (
         <li key={nav.name}>
           <RenderSwitch 
-            condition={Boolean(nav.subItems.length)}
+            condition={Boolean(nav.subItems?.length)}
             whenTrue={
               <div className="flex flex-row items-center cursor-pointer justify-start gap-1">
               <span>{nav.icon}</span>
@@ -109,6 +114,8 @@ export const MenuItem: React.FC<{ items: SidebarMenuItem[] }> = ({ items }: { it
         </li>
       ))}
     </ul>
+  </div>
+  )
 }
 
 export const AppSidebar: React.FC = () => {
@@ -137,18 +144,8 @@ export const AppSidebar: React.FC = () => {
       <div className="flex flex-col overflow-y-auto no-scrollbar">
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
-            <div>
-              <h2 className="mb-4 text-xs uppercase text-gray-400">
-                Menu
-              </h2>
-              <MenuItem items={mockNavItems} />
-            </div>
-            <div>
-              <h2 className="mb-4 text-xs uppercase text-gray-400">
-                Others
-              </h2>
-              <MenuItem items={mockOthersItems} />
-            </div>
+            <MenuItem title="Menu" items={mockNavItems} />
+            <MenuItem title="Other" items={mockOthersItems} />
           </div>
         </nav>
       </div>
