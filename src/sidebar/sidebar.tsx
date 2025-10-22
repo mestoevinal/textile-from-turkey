@@ -72,49 +72,49 @@ const mockOthersItems = [
 export const MenuItem: React.FC<{ items: SidebarMenuItem[], title: string }> = ({ items, title }) => {
   return (
     <div>
-    <h2 className="mb-4 text-xs uppercase text-gray-400">
-      {title}
-    </h2>
-    <ul className="flex flex-col gap-2">
-      {items.map(nav => (
-        <li key={nav.name}>
-          <RenderSwitch 
-            condition={Boolean(nav.subItems?.length)}
-            whenTrue={
-              <div className="flex flex-row items-center cursor-pointer justify-start gap-1">
-              <span>{nav.icon}</span>
-              <span>{nav.name}</span>
-              <ChevronDownIcon className="ml-auto w-5 h-5 text-gray-400" />
-            </div>
-            }
-            whenFalse={
-              <Link to={nav.path} className="flex flex-row items-center justify-start gap-1">
+      <h2 className="mb-4 text-xs uppercase text-gray-400">
+        {title}
+      </h2>
+      <ul className="flex flex-col gap-2">
+        {items.map(nav => (
+          <li key={nav.name}>
+            <RenderSwitch 
+              condition={Boolean(nav.subItems?.length)}
+              whenTrue={
+                <div className="flex flex-row items-center cursor-pointer justify-start gap-1">
                 <span>{nav.icon}</span>
                 <span>{nav.name}</span>
-              </Link>
-            }
-          />
-          <RenderSwitch 
-            condition={Boolean(nav.subItems.length)}
-            whenTrue={
-              <div className="overflow-hidden mt-2 ml-9">
-                <ul>
-                  {nav.subItems.map((sub: any) => (
-                    <li key={sub.name} className="relative flex items-center rounded-lg py-1 text-theme-sm">
-                      <Link to={sub.path} className="">
-                        {sub.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                <ChevronDownIcon className="ml-auto w-5 h-5 text-gray-400" />
               </div>
-            }
-            whenFalse={null}
-          />
-        </li>
-      ))}
-    </ul>
-  </div>
+              }
+              whenFalse={
+                <Link to={nav.path} className="flex flex-row items-center justify-start gap-1">
+                  <span>{nav.icon}</span>
+                  <span>{nav.name}</span>
+                </Link>
+              }
+            />
+            <RenderSwitch 
+              condition={Boolean(nav.subItems.length)}
+              whenTrue={
+                <div className="overflow-hidden mt-2 ml-9">
+                  <ul>
+                    {nav.subItems.map((sub: any) => (
+                      <li key={sub.name} className="relative flex items-center rounded-lg py-1 text-theme-sm">
+                        <Link to={sub.path} className="">
+                          {sub.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              }
+              whenFalse={null}
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
   )
 }
 
