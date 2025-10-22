@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as icons from '../icons';
 import React, { type MouseEventHandler, type SVGProps } from 'react';
-import './Icon.scss';
 
 export type IconName = keyof (typeof icons);
 export type IconDirection = 'top' | 'right' | 'bottom' | 'left';
