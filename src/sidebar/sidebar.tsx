@@ -98,16 +98,16 @@ export const MenuItem: React.FC<{ items: SidebarMenuItem[], title: string }> = (
             condition={Boolean(nav.subItems.length)}
             whenTrue={
               <div className="overflow-hidden mt-2 ml-9">
-              <ul>
-                {nav.subItems.map((sub: any) => (
-                  <li key={sub.name} className="relative flex items-center rounded-lg py-1 text-theme-sm">
-                    <Link to={sub.path} className="">
-                      {sub.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                <ul>
+                  {nav.subItems.map((sub: any) => (
+                    <li key={sub.name} className="relative flex items-center rounded-lg py-1 text-theme-sm">
+                      <Link to={sub.path} className="">
+                        {sub.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             }
             whenFalse={null}
           />
