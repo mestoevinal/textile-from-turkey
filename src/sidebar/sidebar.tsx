@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { Link } from 'react-router-dom';
 import {
   CalenderIcon,
@@ -12,17 +12,19 @@ import {
 import { RenderSwitch } from '../components/RenderSwitch';
 import type { JSX } from 'react';
 
-type SidebarMenuItem =
-  | {
-      icon: JSX.Element;
-      name: string;
-      path: string;
-    }
-  | {
-      icon: JSX.Element;
-      name: string;
-      subItems: { name: string; path: string }[];
-    };
+type SidebarMenuGroup = {
+  icon: JSX.Element;
+  name: string;
+  subItems: { name: string; path: string }[];
+}
+
+type SidebarMenuLink = {
+  icon: JSX.Element;
+  name: string;
+  path: string;
+}
+
+type SidebarMenuItem = SidebarMenuGroup | SidebarMenuLink
 
 const mockNavItems = [
   {
@@ -69,54 +71,58 @@ const mockOthersItems = [
   },
 ];
 
-export const MenuItem: React.FC<{ items: SidebarMenuItem[], title: string }> = ({ items, title }) => {
+export const MenuItem: React.FC<{ items: SidebarMenuItem[]; title: string }> = ({ items, title }) => {
   return (
     <div>
-      <h2 className="mb-4 text-xs uppercase text-gray-400">
-        {title}
-      </h2>
+      <h2 className="mb-4 text-xs uppercase text-gray-400">{title}</h2>
       <ul className="flex flex-col gap-2">
-        {items.map(nav => (
-          <li key={nav.name}>
-            <RenderSwitch 
-              condition={Boolean(nav.subItems?.length)}
-              whenTrue={
-                <div className="flex flex-row items-center cursor-pointer justify-start gap-1">
-                <span>{nav.icon}</span>
-                <span>{nav.name}</span>
-                <ChevronDownIcon className="ml-auto w-5 h-5 text-gray-400" />
-              </div>
-              }
-              whenFalse={
-                <Link to={nav.path} className="flex flex-row items-center justify-start gap-1">
-                  <span>{nav.icon}</span>
-                  <span>{nav.name}</span>
-                </Link>
-              }
-            />
-            <RenderSwitch 
-              condition={Boolean(nav.subItems.length)}
-              whenTrue={
-                <div className="overflow-hidden mt-2 ml-9">
-                  <ul>
-                    {nav.subItems.map((sub: any) => (
-                      <li key={sub.name} className="relative flex items-center rounded-lg py-1 text-theme-sm">
-                        <Link to={sub.path} className="">
-                          {sub.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              }
-              whenFalse={null}
-            />
-          </li>
-        ))}
+        {items.map((nav) => {
+          const isGroup = 'subItems' in nav;
+          return (
+            <li key={nav.name}>
+              <RenderSwitch
+                condition={isGroup}
+                whenTrue={
+                  <div className="flex flex-row items-center cursor-pointer justify-start gap-1">
+                    <span>{nav.icon}</span>
+                    <span>{nav.name}</span>
+                    <ChevronDownIcon className="ml-auto w-5 h-5 text-gray-400" />
+                  </div>
+                }
+                whenFalse={
+                  <Link to={(nav as SidebarMenuLink).path} className="flex flex-row items-center justify-start gap-1">
+                    <span>{nav.icon}</span>
+                    <span>{nav.name}</span>
+                  </Link>
+                }
+              />
+              <RenderSwitch
+                condition={isGroup}
+                whenTrue={
+                  <div className="overflow-hidden mt-2 ml-9">
+                    <ul>
+                      {(nav as SidebarMenuGroup).subItems.map((sub) => (
+                        <li key={sub.name} className="relative flex items-center rounded-lg py-1 text-theme-sm">
+                          <Link to={sub.path}>{sub.name}</Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                }
+                whenFalse={
+                  <Link to={(nav as SidebarMenuLink).path} className="flex flex-row items-center justify-start gap-1">
+                    <span>{nav.icon}</span>
+                    <span>{nav.name}</span>
+                  </Link>
+                }
+              />
+            </li>
+          );
+        })}
       </ul>
     </div>
-  )
-}
+  );
+};
 
 export const AppSidebar: React.FC = () => {
   return (
