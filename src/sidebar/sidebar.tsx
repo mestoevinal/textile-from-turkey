@@ -10,6 +10,19 @@ import {
   UserCircleIcon,
 } from '../icons';
 import { RenderSwitch } from '../components/RenderSwitch';
+import type { JSX } from 'react';
+
+type SidebarMenuItem =
+  | {
+      icon: JSX.Element;
+      name: string;
+      path: string;
+    }
+  | {
+      icon: JSX.Element;
+      name: string;
+      subItems: { name: string; path: string }[];
+    };
 
 const mockNavItems = [
   {
@@ -56,9 +69,9 @@ const mockOthersItems = [
   },
 ];
 
-export const MenuItem: React.FC<any> = ({ items }: any) => {
+export const MenuItem: React.FC<{ items: SidebarMenuItem[] }> = ({ items }: { items: SidebarMenuItem[] }) => {
   return <ul className="flex flex-col gap-2">
-      {items.map((nav: any) => (
+      {items.map(nav => (
         <li key={nav.name}>
           <RenderSwitch 
             condition={Boolean(nav.subItems.length)}
