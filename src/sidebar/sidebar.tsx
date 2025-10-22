@@ -1,50 +1,40 @@
  
 import { Link } from 'react-router-dom';
-import {
-  CalenderIcon,
-  ChevronDownIcon,
-  GridIcon,
-  PageIcon,
-  PieChartIcon,
-  PlugInIcon,
-  UserCircleIcon,
-} from '../icons';
 import { RenderSwitch } from '../components/RenderSwitch';
-import type { JSX } from 'react';
+import { Icon, type IconName } from '../components/Icon';
 
 type SidebarMenuGroup = {
-  icon: JSX.Element;
+  icon: IconName;
   name: string;
   subItems: { name: string; path: string }[];
 }
-
 type SidebarMenuLink = {
-  icon: JSX.Element;
+  icon: IconName;
   name: string;
   path: string;
 }
 
 type SidebarMenuItem = SidebarMenuGroup | SidebarMenuLink
 
-const mockNavItems = [
+const mockNavItems: SidebarMenuItem[] = [
   {
-    icon: <GridIcon />,
+    icon: 'Grid',
     name: 'Dashboard',
     subItems: [{ name: 'Ecommerce', path: '/' }],
   },
   {
-    icon: <CalenderIcon />,
+    icon: 'Calendar',
     name: 'Calendar',
     path: '/calendar',
   },
   {
-    icon: <UserCircleIcon />,
+    icon: 'UserCircle',
     name: 'User Profile',
     path: '/profile',
   },
   {
     name: 'Pages',
-    icon: <PageIcon />,
+    icon: 'Page',
     subItems: [
       { name: 'Blank Page', path: '/blank' },
       { name: '404 Error', path: '/error-404' },
@@ -52,9 +42,9 @@ const mockNavItems = [
   },
 ];
 
-const mockOthersItems = [
+const mockOthersItems: SidebarMenuItem[] = [
   {
-    icon: <PieChartIcon />,
+    icon: 'PieChart',
     name: 'Charts',
     subItems: [
       { name: 'Line Chart', path: '/line-chart' },
@@ -62,7 +52,7 @@ const mockOthersItems = [
     ],
   },
   {
-    icon: <PlugInIcon />,
+    icon: 'PlugIn',
     name: 'Authentication',
     subItems: [
       { name: 'Sign In', path: '/signin' },
@@ -86,7 +76,7 @@ export const MenuItem: React.FC<{ items: SidebarMenuItem[]; title: string }> = (
                   <div className="flex flex-row items-center cursor-pointer justify-start gap-1">
                     <span>{nav.icon}</span>
                     <span>{nav.name}</span>
-                    <ChevronDownIcon className="ml-auto w-5 h-5 text-gray-400" />
+                    <Icon name="ChevronDown" className="ml-auto w-5 h-5 text-gray-400" />
                   </div>
                 }
                 whenFalse={
