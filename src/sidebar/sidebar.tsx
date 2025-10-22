@@ -60,16 +60,16 @@ export const MenuItem: React.FC<any> = ({ items }: any) => {
       {items.map((nav: any) => (
         <li key={nav.name}>
           {nav.subItems ? (
-            <div className="flex flex-row cursor-pointer justify-start gap-1">
-              <span className="">{nav.icon}</span>
-              <span className="">{nav.name}</span>
+            <div className="flex flex-row items-center cursor-pointer justify-start gap-1">
+              <span>{nav.icon}</span>
+              <span>{nav.name}</span>
               <ChevronDownIcon className="ml-auto w-5 h-5 text-gray-400" />
             </div>
           ) : (
             nav.path && (
-              <Link to={nav.path} className="flex flex-row group justify-start gap-1">
-                <span className="">{nav.icon}</span>
-                <span className="">{nav.name}</span>
+              <Link to={nav.path} className="flex flex-row items-center justify-start gap-1">
+                <span>{nav.icon}</span>
+                <span>{nav.name}</span>
               </Link>
             )
           )}
@@ -94,9 +94,9 @@ export const MenuItem: React.FC<any> = ({ items }: any) => {
 export const AppSidebar: React.FC = () => {
   return (
     <aside
-      className={'fixed flex flex-col top-0 px-5 left-0 bg-white text-gray-900 h-screen border-r border-gray-200 w-[290px]'}
+      className={'fixed flex flex-col top-0 px-5 left-0 bg-white text-gray-900 h-screen border-r border-gray-200'}
     >
-      <div className="py-8 flex justify-center">
+      <div className="py-2 flex justify-center">
         <Link to="/">
           <img
             className="dark:hidden"
@@ -118,13 +118,13 @@ export const AppSidebar: React.FC = () => {
         <nav className="mb-6">
           <div className="flex flex-col gap-4">
             <div>
-              <h2 className="mb-4 text-xs uppercase leading-[20px] text-gray-400">
+              <h2 className="mb-4 text-xs uppercase text-gray-400">
                 Menu
               </h2>
               <MenuItem items={mockNavItems} />
             </div>
             <div>
-              <h2 className="mb-4 text-xs uppercase leading-[20px] text-gray-400">
+              <h2 className="mb-4 text-xs uppercase text-gray-400">
                 Others
               </h2>
               <MenuItem items={mockOthersItems} />
