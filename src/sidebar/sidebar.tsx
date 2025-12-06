@@ -72,11 +72,11 @@ const MenuItemComponent: React.FC<{ item: SidebarMenuItem }> = ({ item }) => {
           onClick={() => setIsOpen(!isOpen)}
           className="flex flex-row items-center cursor-pointer justify-start gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
         >
-          <Icon name={item.icon} size="sm" className="text-gray-600 flex-shrink-0" />
+          <Icon name={item.icon} size="lg" className="text-gray-600 flex-shrink-0" />
           <span className="text-sm font-medium text-gray-700">{item.name}</span>
           <Icon 
             name="ChevronDown" 
-            size="sm"
+            size="lg"
             className={`ml-auto text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} 
           />
         </div>
@@ -101,7 +101,7 @@ const MenuItemComponent: React.FC<{ item: SidebarMenuItem }> = ({ item }) => {
         to={item.path} 
         className="flex flex-row items-center justify-start gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
       >
-        <Icon name={item.icon} size="sm" className="text-gray-600 flex-shrink-0" />
+        <Icon name={item.icon} size="lg" className="text-gray-600 flex-shrink-0" />
         <span className="text-sm font-medium text-gray-700">{item.name}</span>
       </Link>
     </li>
