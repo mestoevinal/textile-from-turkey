@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { Icon, type IconName } from '../components/Icon/Icon';
 
@@ -63,46 +63,76 @@ const mockOthersItems: SidebarMenuItem[] = [
 
 const MenuItemComponent: React.FC<{ item: SidebarMenuItem }> = ({ item }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
   const isGroup = 'subItems' in item;
 
   if (isGroup) {
+    const isAnySubItemActive = item.subItems.some(sub => sub.path === location.pathname);
+    
     return (
       <li>
         <div 
           onClick={() => setIsOpen(!isOpen)}
-          className="flex flex-row items-center cursor-pointer justify-start gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+          className={`flex flex-row items-center cursor-pointer justify-start gap-3 px-3 py-2 rounded-lg transition-colors ${
+            isOpen || isAnySubItemActive 
+              ? 'bg-blue-50 text-blue-600' 
+              : 'hover:bg-gray-100 text-gray-700'
+          }`}
         >
-          <Icon name={item.icon} size="lg" className="text-gray-600 flex-shrink-0" />
-          <span className="text-sm font-medium text-gray-700">{item.name}</span>
+          <Icon 
+            name={item.icon} 
+            size="sm" 
+            className={`flex-shrink-0 ${isOpen || isAnySubItemActive ? 'text-blue-600' : 'text-gray-600'}`} 
+          />
+          <span className="text-sm font-medium">{item.name}</span>
           <Icon 
             name="ChevronDown" 
-            size="lg"
-            className={`ml-auto text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} 
+            size="sm"
+            className={`ml-auto transition-transform ${isOpen ? 'rotate-180' : ''} ${
+              isOpen || isAnySubItemActive ? 'text-blue-600' : 'text-gray-400'
+            }`} 
           />
         </div>
         <div className={`ml-8 mt-1 space-y-1 ${isOpen ? 'block' : 'hidden'}`}>
-          {item.subItems.map((sub) => (
-            <Link 
-              key={sub.name}
-              to={sub.path}
-              className="block px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors"
-            >
-              {sub.name}
-            </Link>
-          ))}
+          {item.subItems.map((sub) => {
+            const isActive = sub.path === location.pathname;
+            return (
+              <Link 
+                key={sub.name}
+                to={sub.path}
+                className={`block px-3 py-2 text-sm rounded-lg transition-colors ${
+                  isActive 
+                    ? 'bg-blue-100 text-blue-700 font-medium' 
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                }`}
+              >
+                {sub.name}
+              </Link>
+            );
+          })}
         </div>
       </li>
     );
   }
 
+  const isActive = item.path === location.pathname;
+
   return (
     <li>
       <Link 
         to={item.path} 
-        className="flex flex-row items-center justify-start gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+        className={`flex flex-row items-center justify-start gap-3 px-3 py-2 rounded-lg transition-colors ${
+          isActive 
+            ? 'bg-blue-50 text-blue-600' 
+            : 'hover:bg-gray-100 text-gray-700'
+        }`}
       >
-        <Icon name={item.icon} size="lg" className="text-gray-600 flex-shrink-0" />
-        <span className="text-sm font-medium text-gray-700">{item.name}</span>
+        <Icon 
+          name={item.icon} 
+          size="sm" 
+          className={`flex-shrink-0 ${isActive ? 'text-blue-600' : 'text-gray-600'}`} 
+        />
+        <span className="text-sm font-medium">{item.name}</span>
       </Link>
     </li>
   );
