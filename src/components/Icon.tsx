@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as icons from '../icons';
 import React, { type MouseEventHandler, type SVGProps } from 'react';
+import './Icon.css';
 
 export type IconName = keyof (typeof icons);
 export type IconDirection = 'top' | 'right' | 'bottom' | 'left';
-
 export type IconProps = {
   name: IconName
   size?: 'sm' | 'md' | 'lg'
@@ -30,51 +30,55 @@ export type IconProps = {
  * - ???
  * - PROFIT!
  */
+
 export function Icon(
   {
+    size = 'md',
+    direction = 'top',
     name,
     'data-testid': testid,
     onClick,
+    className = '',
     tooltip,
     type,
   }: IconProps,
 ) {
   const SVG = icons[name] as unknown as React.FC<SVGProps<SVGSVGElement>>;
-  const Wrap = tooltip ? React.Fragment : React.Fragment; // TODO: React.Fragment replace on Tooltip
-  const wrapProps = tooltip ? { title: tooltip } : {};
+  
+  const sizeClass = `icon--${size}`;
+  const directionClass = direction !== 'top' ? `icon--direction-${direction}` : '';
+  const fullClassName = `icon ${sizeClass} ${directionClass} ${className}`.trim();
+  
+  const content = (
+    <SVG
+      aria-hidden="true"
+      focusable="false"
+      role="presentation"
+    />
+  );
 
   if (onClick) {
     return (
-      <Wrap {...wrapProps as any}>
-        <button
-          data-testid={testid}
-          type={type}
-          onClick={onClick}
-        >
-          <SVG
-            aria-hidden="true"
-            focusable="false"
-            role="presentation"
-            viewBox={'0 0 16 16'}
-          />
-        </button>
-      </Wrap>
-    );
-
-  }
-  return (
-    <Wrap {...wrapProps as any}>
-      <i
+      <button
+        className={fullClassName}
         data-testid={testid}
+        type={type}
+        onClick={onClick}
+        title={tooltip}
       >
-        <SVG
-          aria-hidden="true"
-          focusable="false"
-          role="presentation"
-          viewBox={'0 0 16 16'}
-        />
-      </i>
-    </Wrap>
+        {content}
+      </button>
+    );
+  }
+
+  return (
+    <i
+      className={fullClassName}
+      data-testid={testid}
+      title={tooltip}
+    >
+      {content}
+    </i>
   );
 }
 
