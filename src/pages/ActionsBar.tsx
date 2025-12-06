@@ -42,26 +42,14 @@ export function ActionsBar({ actions }: ActionsBarProps) {
           <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -skew-x-12"></div>
           
           {/* Иконка */}
-          {action.icon && (
-            <span className="relative z-10 text-lg group-hover:scale-110 transition-transform duration-200">
-              {action.icon}
-            </span>
-          )}
+          {/* {action.icon && (
+            <Icon name={action.icon}/>
+          )} */}
           
           {/* Лейбл */}
           <span className="relative z-10">
             {action.label}
           </span>
-          
-          {/* Стрелка справа для визуальной привлекательности */}
-          <svg 
-            className="relative z-10 w-4 h-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200" 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
         </button>
       ))}
       
