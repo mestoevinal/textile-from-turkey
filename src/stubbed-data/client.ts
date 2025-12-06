@@ -1,4 +1,6 @@
-export const clientPage = {
+import type { PageConfig } from '../schemas'
+
+export const clientPage: PageConfig = {
   pageName: 'Clients',
   entityKey: 'clients',
   layout: 'list',
@@ -26,7 +28,6 @@ export const clientPage = {
       visible: true,
       order: 3,
       defaultValue: 'active',
-      meta: { color: 'blue' },
     },
     {
       fieldName: 'createdAt',
