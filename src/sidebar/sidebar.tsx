@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { Icon, type IconName } from '../components/Icon';
+import { Icon, type IconName } from '../components/Icon/Icon';
 
 type SidebarMenuGroup = { 
   icon: IconName; 

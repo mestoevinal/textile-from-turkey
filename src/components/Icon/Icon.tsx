@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as icons from '../icons';
+import * as icons from '../../icons';
 import React, { type MouseEventHandler, type SVGProps } from 'react';
 import './Icon.css';
 
