@@ -26,37 +26,42 @@ export function ActionsBar({ actions }: ActionsBarProps) {
   if (actions.length === 0) return null
 
   return (
-    <div className="flex flex-wrap gap-3 items-center">
+    <div className="flex flex-wrap gap-2 md:gap-3 items-center justify-end">
       {actions.map(action => (
         <button
           key={action.id}
           className={`
-            group relative px-5 py-2.5 rounded-xl text-white text-sm font-semibold
+            group relative px-3 md:px-5 py-2 md:py-2.5 rounded-xl text-white text-xs md:text-sm font-semibold
             shadow-lg hover:shadow-xl transition-all duration-200
             hover:scale-105 active:scale-95
-            flex items-center gap-2
+            flex items-center gap-1.5 md:gap-2
             ${getActionStyle(action)}
           `}
         >
           {/* Эффект блеска при hover */}
           <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -skew-x-12"></div>
           
-          {/* Иконка */}
-          {/* {action.icon && (
-            <Icon name={action.icon}/>
-          )} */}
-          
           {/* Лейбл */}
-          <span className="relative z-10">
+          <span className="relative z-10 whitespace-nowrap">
             {action.label}
           </span>
+          
+          {/* Иконка стрелки - скрываем на мобильных */}
+          <svg 
+            className="relative z-10 w-3.5 h-3.5 md:w-4 md:h-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200 hidden sm:block" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
         </button>
       ))}
       
-      {/* Дополнительная кнопка "Еще" если действий много */}
-      {actions.length > 4 && (
+      {/* Дополнительная кнопка "Еще" если действий много - показываем только на desktop */}
+      {actions.length > 3 && (
         <button
-          className="px-4 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-gray-700 text-sm font-semibold hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center gap-2 group"
+          className="hidden lg:flex px-4 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-gray-700 text-sm font-semibold hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 items-center gap-2 group"
         >
           <span className="text-gray-500 group-hover:text-gray-700 transition-colors">
             Еще
