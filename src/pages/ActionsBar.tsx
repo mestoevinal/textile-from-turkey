@@ -45,16 +45,6 @@ export function ActionsBar({ actions }: ActionsBarProps) {
           <span className="relative z-10 whitespace-nowrap">
             {action.label}
           </span>
-          
-          {/* Иконка стрелки - скрываем на мобильных */}
-          <svg 
-            className="relative z-10 w-3.5 h-3.5 md:w-4 md:h-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200 hidden sm:block" 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
         </button>
       ))}
       
@@ -66,9 +56,6 @@ export function ActionsBar({ actions }: ActionsBarProps) {
           <span className="text-gray-500 group-hover:text-gray-700 transition-colors">
             Еще
           </span>
-          <svg className="w-4 h-4 text-gray-500 group-hover:text-gray-700 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-          </svg>
         </button>
       )}
     </div>

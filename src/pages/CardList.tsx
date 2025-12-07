@@ -22,42 +22,42 @@ export function CardList({ data, fields }: CardListProps) {
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
           
           {/* Фоновый эффект при hover */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/0 via-purple-50/0 to-pink-50/0 group-hover:from-blue-50/50 group-hover:via-purple-50/30 group-hover:to-pink-50/50 transition-all duration-500"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/0 via-purple-50/0 to-pink-50/0 group-hover:from-blue-50/30 group-hover:via-purple-50/20 group-hover:to-pink-50/30 transition-all duration-500"></div>
           
           {/* Контент карточки */}
-          <div className="relative p-6 space-y-4">
+          <div className="relative p-6">
             {/* Первое поле - заголовок */}
             {firstField && (
-              <div className="pb-3 border-b border-gray-100">
-                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+              <div className="mb-5 pb-4 border-b border-gray-100">
+                <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
                   {String(item[firstField.fieldName] ?? '')}
                 </h3>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 mt-1.5 font-medium uppercase tracking-wider">
                   {firstField.title}
                 </p>
               </div>
             )}
             
-            {/* Остальные поля */}
+            {/* Остальные поля - таблица */}
             <div className="space-y-3">
               {restFields.map((f) => (
                 <div 
                   key={f.fieldName} 
-                  className="flex items-start justify-between gap-4 group/item"
+                  className="flex items-start justify-between gap-4 py-2.5 rounded-lg hover:bg-gray-50/70 transition-colors px-3 -mx-3"
                 >
-                  <span className="text-sm font-medium text-gray-500 flex-shrink-0">
+                  <span className="text-sm font-semibold text-gray-600 flex-shrink-0">
                     {f.title}
                   </span>
-                  <span className="text-sm text-gray-900 text-right font-medium group-hover/item:text-blue-600 transition-colors">
+                  <span className="text-sm font-bold text-gray-900 text-right break-words">
                     {String(item[f.fieldName] ?? '')}
                   </span>
                 </div>
               ))}
             </div>
-            
-            {/* Декоративный corner accent */}
-            <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-blue-100/30 to-transparent rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           </div>
+          
+          {/* Декоративный уголок */}
+          <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-blue-100/20 to-transparent rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         </div>
       ))}
     </div>

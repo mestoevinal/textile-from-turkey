@@ -72,5 +72,13 @@ export const clientPage: PageConfig = {
 export const clientData = [
   { name: 'Иванов И.И.', email: 'ivanov@mail.ru', status: 'active', createdAt: '2024-10-12' },
   { name: 'Петров П.П.', email: 'petrov@mail.ru', status: 'archived', createdAt: '2024-09-01' },
+  { name: 'Иванов И.И.', email: 'ivanov@mail.ru', status: 'active', createdAt: '2024-10-12' },
+  { name: 'Петров П.П.', email: 'petrov@mail.ru', status: 'archived', createdAt: '2024-09-01' },
+  { name: 'Иванов И.И.', email: 'ivanov@mail.ru', status: 'active', createdAt: '2024-10-12' },
+  { name: 'Петров П.П.', email: 'petrov@mail.ru', status: 'archived', createdAt: '2024-09-01' },
+  { name: 'Иванов И.И.', email: 'ivanov@mail.ru', status: 'active', createdAt: '2024-10-12' },
+  { name: 'Петров П.П.', email: 'petrov@mail.ru', status: 'archived', createdAt: '2024-09-01' },
+  { name: 'Иванов И.И.', email: 'ivanov@mail.ru', status: 'active', createdAt: '2024-10-12' },
+  { name: 'Петров П.П.', email: 'petrov@mail.ru', status: 'archived', createdAt: '2024-09-01' },
 ]
 
