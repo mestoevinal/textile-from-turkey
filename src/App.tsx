@@ -3,8 +3,18 @@ import { BrowserRouter } from 'react-router-dom'
 import { AppSidebar } from './sidebar/sidebar'
 import { PageRenderer } from './pages/Renderer'
 import { clientData, clientPage } from './stubbed-data/client'
+import { useEffect } from 'react';
 
 export function App() {
+  
+  useEffect(() => {
+    const tg = (window as any).Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
+  }, []);
+
   return (
     <BrowserRouter>
       <div className="min-h-screen flex bg-gray-50">
