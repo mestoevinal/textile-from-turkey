@@ -40,7 +40,7 @@ export function CardList({ data, fields }: CardListProps) {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
       {data.map((item, idx) => {
         const accentColor = badgeColors[idx % badgeColors.length];
         
