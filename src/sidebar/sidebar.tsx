@@ -43,14 +43,14 @@ const mockNavItems: SidebarMenuItem[] = [
 ];
 
 const mockOthersItems: SidebarMenuItem[] = [ 
-  { 
-    icon: 'PieChart', 
-    name: 'Charts', 
-    subItems: [ 
-      { name: 'Line Chart', path: '/line-chart' }, 
-      { name: 'Bar Chart', path: '/bar-chart' }, 
-    ],
-  },
+  // { 
+  //   icon: 'PieChart', 
+  //   name: 'Charts', 
+  //   subItems: [ 
+  //     { name: 'Line Chart', path: '/line-chart' }, 
+  //     { name: 'Bar Chart', path: '/bar-chart' }, 
+  //   ],
+  // },
   { 
     icon: 'PlugIn', 
     name: 'Authentication', 
