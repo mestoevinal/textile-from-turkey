@@ -8,58 +8,105 @@ interface CardListProps {
 
 export function CardList({ data, fields }: CardListProps) {
   const visibleFields = fields.filter(f => f.visible);
-  const firstField = visibleFields[0];
-  const restFields = visibleFields.slice(1);
+  
+  // Сортируем поля по order
+  const sortedFields = [...visibleFields].sort((a: any, b: any) => a.order - b.order);
+  
+  // Первое поле = заголовок
+  const titleField = sortedFields[0];
+  const detailFields = sortedFields.slice(1);
+
+  // Функция для форматирования значения в зависимости от типа
+  const formatValue = (value: unknown, field: Field): string => {
+    if (value === null || value === undefined) return '—';
+    
+    const strValue = String(value);
+    
+    // Форматирование по типу поля
+    switch (field.fieldType) {
+      case 'date':
+        // Форматируем дату
+        return new Date(strValue).toLocaleDateString('ru-RU', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        });
+      
+      case 'number':
+        // Форматируем число
+        return Number(value).toLocaleString('ru-RU');
+      
+      case 'select':
+        // Можно добавить бейдж
+        return strValue;
+      
+      default:
+        return strValue;
+    }
+  };
+
+  // Цвета для бейджей (циклически)
+  const badgeColors = [
+    'bg-blue-100 text-blue-700 border-blue-200',
+    'bg-purple-100 text-purple-700 border-purple-200',
+    'bg-green-100 text-green-700 border-green-200',
+    'bg-orange-100 text-orange-700 border-orange-200',
+    'bg-pink-100 text-pink-700 border-pink-200',
+  ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {data.map((item, idx) => (
-        <div 
-          key={idx} 
-          className="group relative bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-blue-200"
-        >
-          {/* Декоративный градиент сверху */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
-          
-          {/* Фоновый эффект при hover */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/0 via-purple-50/0 to-pink-50/0 group-hover:from-blue-50/30 group-hover:via-purple-50/20 group-hover:to-pink-50/30 transition-all duration-500"></div>
-          
-          {/* Контент карточки */}
-          <div className="relative p-6">
-            {/* Первое поле - заголовок */}
-            {firstField && (
-              <div className="mb-5 pb-4 border-b border-gray-100">
-                <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
-                  {String(item[firstField.fieldName] ?? '')}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {data.map((item, idx) => {
+        const accentColor = badgeColors[idx % badgeColors.length];
+        
+        return (
+          <div 
+            key={idx} 
+            className="bg-white rounded-xl p-5 border border-gray-200 hover:border-blue-400 hover:shadow-lg transition-all duration-200 active:scale-[0.98] cursor-pointer"
+          >
+            {/* Заголовок карточки */}
+            {titleField && (
+              <div className="mb-4 pb-4 border-b border-gray-100">
+                <h3 className="text-lg font-bold text-gray-900 leading-tight mb-2">
+                  {formatValue(item[titleField.fieldName], titleField)}
                 </h3>
-                <p className="text-xs text-gray-500 mt-1.5 font-medium uppercase tracking-wider">
-                  {firstField.title}
-                </p>
+                <div className="w-12 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
               </div>
             )}
-            
-            {/* Остальные поля - таблица */}
+
+            {/* Остальные поля */}
             <div className="space-y-3">
-              {restFields.map((f) => (
-                <div 
-                  key={f.fieldName} 
-                  className="flex items-start justify-between gap-4 py-2.5 rounded-lg hover:bg-gray-50/70 transition-colors px-3 -mx-3"
-                >
-                  <span className="text-sm font-semibold text-gray-600 flex-shrink-0">
-                    {f.title}
-                  </span>
-                  <span className="text-sm font-bold text-gray-900 text-right break-words">
-                    {String(item[f.fieldName] ?? '')}
-                  </span>
-                </div>
-              ))}
+              {detailFields.map((field) => {
+                const value = formatValue(item[field.fieldName], field);
+                const isSelectField = field.fieldType === 'select';
+                
+                return (
+                  <div 
+                    key={field.fieldName} 
+                    className="flex items-center justify-between gap-3"
+                  >
+                    <span className="text-sm text-gray-500 font-medium flex-shrink-0">
+                      {field.title}
+                    </span>
+                    
+                    {isSelectField ? (
+                      // Поля типа select отображаем как бейджи
+                      <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${accentColor}`}>
+                        {value}
+                      </span>
+                    ) : (
+                      // Остальные поля - обычный текст
+                      <span className="text-sm font-semibold text-gray-900 text-right break-words">
+                        {value}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
-          
-          {/* Декоративный уголок */}
-          <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-blue-100/20 to-transparent rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-        </div>
-      ))}
+        );
+      })}
     </div>
-  )
+  );
 }
