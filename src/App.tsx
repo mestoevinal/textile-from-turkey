@@ -17,18 +17,15 @@ export function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
         <div className="min-h-screen flex bg-gray-50">
-          {/* Sidebar - фиксированная слева */}
           <AppSidebar />
-          
-          {/* Main content - справа от сайдбара */}
           <main className="flex-1 lg:ml-64 p-4 lg:p-6">
-            <Route path="/" element={ <PageRenderer config={clientPage as any} data={clientData}/> } />
-            <Route path="/" element={ <PageRenderer config={productPage as any} data={productData}/>  } />
+            <Routes>
+              <Route path="/client" element={ <PageRenderer config={clientPage as any} data={clientData}/> } />
+              <Route path="/products" element={ <PageRenderer config={productPage as any} data={productData}/>  } />
+            </Routes>
           </main>
         </div>
-      </Routes>
     </BrowserRouter>
   )
 }
