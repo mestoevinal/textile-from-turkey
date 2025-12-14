@@ -18,27 +18,14 @@ type SidebarMenuItem = SidebarMenuGroup | SidebarMenuLink;
 
 const mockNavItems: SidebarMenuItem[] = [
   { 
-    icon: 'Grid', 
-    name: 'Dashboard', 
-    subItems: [{ name: 'Ecommerce', path: '/' }],
-  }, 
-  { 
     icon: 'Calendar', 
-    name: 'Calendar', 
-    path: '/calendar',
+    name: 'Clients', 
+    path: '/client',
   },
   { 
     icon: 'UserCircle', 
-    name: 'User Profile', 
-    path: '/profile',
-  },
-  { 
-    name: 'Pages', 
-    icon: 'Page', 
-    subItems: [ 
-      { name: 'Blank Page', path: '/blank' }, 
-      { name: '404 Error', path: '/error-404' },
-    ],
+    name: 'Products', 
+    path: '/products',
   },
 ];
 
