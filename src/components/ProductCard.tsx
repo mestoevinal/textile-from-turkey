@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import type { Product } from '../App';
 
 interface ProductCardProps {
@@ -9,6 +9,39 @@ export function ProductCard({ product }: ProductCardProps) {
   const [currentImage, setCurrentImage] = useState(0);
   const hasImages = product.images.length > 0;
   const hasMultipleImages = product.images.length > 1;
+  
+  // Touch swipe handling
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+  const minSwipeDistance = 50;
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchEndX.current = null;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    
+    const distance = touchStartX.current - touchEndX.current;
+    
+    if (Math.abs(distance) > minSwipeDistance) {
+      if (distance > 0) {
+        // Swipe left - next image
+        setCurrentImage(prev => (prev + 1) % product.images.length);
+      } else {
+        // Swipe right - previous image
+        setCurrentImage(prev => (prev - 1 + product.images.length) % product.images.length);
+      }
+    }
+    
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
 
   const nextImage = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -27,27 +60,33 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100">
       {/* Image slider */}
-      <div className="aspect-[5/4] sm:aspect-[4/3] bg-gradient-to-br from-gray-50 to-gray-100 relative group">
+      <div 
+        className="aspect-[5/4] sm:aspect-[4/3] bg-gradient-to-br from-gray-50 to-gray-100 relative group"
+        onTouchStart={hasMultipleImages ? handleTouchStart : undefined}
+        onTouchMove={hasMultipleImages ? handleTouchMove : undefined}
+        onTouchEnd={hasMultipleImages ? handleTouchEnd : undefined}
+      >
         {hasImages ? (
           <>
             <img
               src={product.images[currentImage]}
               alt={product.name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover select-none"
+              draggable={false}
             />
             
-            {/* Navigation arrows */}
+            {/* Navigation arrows - hidden on mobile */}
             {hasMultipleImages && (
               <>
                 <button
                   onClick={prevImage}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-sm text-gray-600 hover:text-gray-900"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 bg-white/90 hover:bg-white rounded-full hidden sm:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-sm text-gray-600 hover:text-gray-900"
                 >
                   ‹
                 </button>
                 <button
                   onClick={nextImage}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-sm text-gray-600 hover:text-gray-900"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 bg-white/90 hover:bg-white rounded-full hidden sm:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-sm text-gray-600 hover:text-gray-900"
                 >
                   ›
                 </button>
