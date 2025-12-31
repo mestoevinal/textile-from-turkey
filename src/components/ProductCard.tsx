@@ -75,18 +75,18 @@ export function ProductCard({ product }: ProductCardProps) {
               draggable={false}
             />
             
-            {/* Navigation arrows - hidden on mobile */}
+            {/* Navigation arrows - always visible */}
             {hasMultipleImages && (
               <>
                 <button
                   onClick={prevImage}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 bg-white/90 hover:bg-white rounded-full hidden sm:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-sm text-gray-600 hover:text-gray-900"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/50 hover:bg-white/80 active:bg-white rounded-full flex items-center justify-center transition-all shadow-sm text-gray-700"
                 >
                   ‹
                 </button>
                 <button
                   onClick={nextImage}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 bg-white/90 hover:bg-white rounded-full hidden sm:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-sm text-gray-600 hover:text-gray-900"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/50 hover:bg-white/80 active:bg-white rounded-full flex items-center justify-center transition-all shadow-sm text-gray-700"
                 >
                   ›
                 </button>
