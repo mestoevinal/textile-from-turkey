@@ -18,15 +18,7 @@ export function App() {
   
   const [products, setProducts] = useState([]);
   console.log('🚀 ~ App ~ products:', products)
-  
-  useEffect(() => {
-    const tg = (window as any).Telegram?.WebApp;
-    if (tg) {
-      tg.ready();
-      tg.expand();
-    }
-  }, []);
-  
+
   useEffect(() => {
     fetchProducts().then(data => setProducts(data as any));
   }, []);
