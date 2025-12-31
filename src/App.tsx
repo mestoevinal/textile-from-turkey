@@ -27,6 +27,7 @@ export function App() {
     <BrowserRouter>
         <div className="min-h-screen flex bg-gray-50">
           <main className="flex-1 lg:ml-64 p-4 lg:p-6">
+            {/* <img src="https://lh3.googleusercontent.com/d/187pF-JQk9j-2kYsF4cj96_CnXr0N_DqM" alt="test" /> */}
             <Routes>
               {/* <Route path="/client" element={ <PageRenderer config={clientPage as any} data={clientData}/> } />
               <Route path="/products" element={ <PageRenderer config={productPage as any} data={productData}/>  } /> */}
