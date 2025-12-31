@@ -25,9 +25,9 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100">
       {/* Image slider */}
-      <div className="aspect-[4/3] bg-gray-100 relative group">
+      <div className="aspect-[5/4] sm:aspect-[4/3] bg-gradient-to-br from-gray-50 to-gray-100 relative group">
         {hasImages ? (
           <>
             <img
@@ -41,13 +41,13 @@ export function ProductCard({ product }: ProductCardProps) {
               <>
                 <button
                   onClick={prevImage}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-sm text-gray-600 hover:text-gray-900"
                 >
                   ‹
                 </button>
                 <button
                   onClick={nextImage}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-sm text-gray-600 hover:text-gray-900"
                 >
                   ›
                 </button>
@@ -56,7 +56,7 @@ export function ProductCard({ product }: ProductCardProps) {
             
             {/* Dots indicator */}
             {hasMultipleImages && (
-              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 bg-black/20 backdrop-blur-sm rounded-full px-2 py-1">
                 {product.images.map((_, index) => (
                   <button
                     key={index}
@@ -64,8 +64,10 @@ export function ProductCard({ product }: ProductCardProps) {
                       e.stopPropagation();
                       setCurrentImage(index);
                     }}
-                    className={`w-2 h-2 rounded-full transition-colors ${
-                      index === currentImage ? 'bg-white' : 'bg-white/50'
+                    className={`w-1.5 h-1.5 rounded-full transition-all ${
+                      index === currentImage 
+                        ? 'bg-white w-3' 
+                        : 'bg-white/60 hover:bg-white/80'
                     }`}
                   />
                 ))}
@@ -73,24 +75,28 @@ export function ProductCard({ product }: ProductCardProps) {
             )}
           </>
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-400">
-            Нет изображения
+          <div className="w-full h-full flex items-center justify-center text-gray-300">
+            <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
           </div>
         )}
       </div>
 
       {/* Product info */}
-      <div className="p-4">
-        <h3 className="font-medium text-gray-800">{product.name}</h3>
+      <div className="p-3 sm:p-4">
+        <h3 className="font-medium text-gray-800 text-sm sm:text-base leading-tight">
+          {product.name}
+        </h3>
         
         {product.description && (
-          <p className="text-sm text-gray-500 mt-1 line-clamp-2">
+          <p className="text-xs sm:text-sm text-gray-500 mt-1 line-clamp-2 leading-relaxed">
             {product.description}
           </p>
         )}
         
-        <p className="text-lg font-semibold text-gray-900 mt-2">
-          {formatPrice(product.price)} ₽
+        <p className="text-base sm:text-lg font-semibold text-gray-900 mt-2">
+          {formatPrice(product.price)} <span className="text-gray-400 font-normal">₽</span>
         </p>
       </div>
     </div>
