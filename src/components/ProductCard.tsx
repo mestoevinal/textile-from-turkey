@@ -61,7 +61,7 @@ export function ProductCard({ product }: ProductCardProps) {
     <div className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100">
       {/* Image slider */}
       <div 
-        className="aspect-[5/4] sm:aspect-[4/3] bg-gradient-to-br from-gray-50 to-gray-100 relative group"
+        className="aspect-[3/2] sm:aspect-[4/3] bg-gradient-to-br from-gray-50 to-gray-100 relative group"
         onTouchStart={hasMultipleImages ? handleTouchStart : undefined}
         onTouchMove={hasMultipleImages ? handleTouchMove : undefined}
         onTouchEnd={hasMultipleImages ? handleTouchEnd : undefined}
@@ -140,7 +140,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
         <button
           onClick={() => {
-            const phone = '79380133303'; // замени на свой номер
+            const phone = '79001234567'; // замени на свой номер
             const message = encodeURIComponent(
               `Здравствуйте! Хочу купить: ${product.name}\nЦена: ${formatPrice(product.price)} ₽\n\nОписание`
             );
