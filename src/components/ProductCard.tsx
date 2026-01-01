@@ -138,7 +138,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </p>
         <a 
           href={`https://wa.me/79888035221?text=${encodeURIComponent(
-            `Заказ: [#${product.id}] [${product.name}] — ${formatPrice(product.price)} ₽\n\nВаш комментарий:`
+            `Информация о товаре: [#${product.id}] [${product.name}] — ${formatPrice(product.price)} ₽\n\nВаш комментарий:`
           )}`}
           target="_blank"
           rel="noopener noreferrer"
