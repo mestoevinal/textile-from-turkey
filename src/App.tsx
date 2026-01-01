@@ -22,12 +22,20 @@ interface RawProduct {
   images: string;
 }
 
+interface CachedData {
+  products: Product[];
+  timestamp: number;
+}
+
 const SHEET_ID = '1FjeC0gX-2rDkh0SX-0EVPBhCKf2Sgt3Rzw8EzE3sMc8';
 const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
 
+const CACHE_KEY = 'products_cache';
+const CACHE_DURATION = 20 * 60 * 1000; // 10 минут в миллисекундах
+
 function parseProducts(rawData: RawProduct[]): Product[] {
   return rawData
-    .filter(item => item.id) // убираем пустые строки
+    .filter(item => item.id)
     .map(item => ({
       id: item.id,
       name: item.name,
@@ -35,16 +43,59 @@ function parseProducts(rawData: RawProduct[]): Product[] {
       price: Number(item.price) || 0,
       category: item.category,
       images: item.images 
-        ? item.images.split('|;').map(url => url.trim()).filter(Boolean)
+        ? item.images.split('|').map(url => url.trim()).filter(Boolean)
         : []
     }));
 }
 
+function getCachedProducts(): Product[] | null {
+  try {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (!cached) return null;
+    
+    const { products, timestamp }: CachedData = JSON.parse(cached);
+    const isExpired = Date.now() - timestamp > CACHE_DURATION;
+    
+    if (isExpired) {
+      localStorage.removeItem(CACHE_KEY);
+      return null;
+    }
+    
+    return products;
+  } catch {
+    return null;
+  }
+}
+
+function setCachedProducts(products: Product[]): void {
+  try {
+    const data: CachedData = {
+      products,
+      timestamp: Date.now()
+    };
+    localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+  } catch {
+    // localStorage может быть недоступен или переполнен
+  }
+}
+
 async function fetchProducts(): Promise<Product[]> {
+  // Сначала проверяем кэш
+  const cached = getCachedProducts();
+  if (cached) {
+    return cached;
+  }
+  
+  // Если кэша нет или устарел — загружаем
   const response = await fetch(url);
   const text = await response.text();
   const { data } = Papa.parse<RawProduct>(text, { header: true });
-  return parseProducts(data);
+  const products = parseProducts(data);
+  
+  // Сохраняем в кэш
+  setCachedProducts(products);
+  
+  return products;
 }
 
 export function App() {
