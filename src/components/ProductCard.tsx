@@ -58,7 +58,7 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100">
+    <div className="bg-white rounded-2xl shadow-[0_0_10px_rgba(0,0,0,0.08)] hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100">
       {/* Image slider */}
       <div 
         className="aspect-[3/2] sm:aspect-[4/3] bg-gradient-to-br from-gray-50 to-gray-100 relative group"
