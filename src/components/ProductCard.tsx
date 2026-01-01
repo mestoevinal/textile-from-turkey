@@ -144,7 +144,7 @@ export function ProductCard({ product }: ProductCardProps) {
             const message = encodeURIComponent(
               `Хочу купить: ${product.id}.${product.name}\nЦена: ${formatPrice(product.price)}`
             );
-            window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+            window.open(`https://wa.me/${phone}?text=${message}`);
           }}
           className="w-full mt-3 py-2.5 px-4 bg-gray-50 hover:bg-gray-100 active:bg-gray-200 text-gray-700 font-medium rounded-xl transition-colors text-sm flex items-center justify-center gap-2 border border-gray-200"
         >
