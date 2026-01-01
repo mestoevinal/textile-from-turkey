@@ -142,7 +142,7 @@ export function ProductCard({ product }: ProductCardProps) {
           onClick={() => {
             const phone = '79888035221'; // замени на свой номер
             const message = encodeURIComponent(
-              `Заказ: #${product.id} ${product.name} — ${formatPrice(product.price)} ₽`
+              `Заказ: [#${product.id}] [${product.name}] — ${formatPrice(product.price)} ₽\n\n`
             );
             window.open(`https://wa.me/${phone}?text=${message}`);
           }}
