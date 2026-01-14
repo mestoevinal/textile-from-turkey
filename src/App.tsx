@@ -48,6 +48,7 @@ function parseProducts(rawData: RawProduct[]): Product[] {
     }));
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getCachedProducts(): Product[] | null {
   try {
     const cached = localStorage.getItem(CACHE_KEY);
@@ -81,10 +82,10 @@ function setCachedProducts(products: Product[]): void {
 
 async function fetchProducts(): Promise<Product[]> {
   // Сначала проверяем кэш
-  const cached = getCachedProducts();
-  if (cached) {
-    return cached;
-  }
+  // const cached = getCachedProducts();
+  // if (cached) {
+  //   return cached;
+  // }
   
   // Если кэша нет или устарел — загружаем
   const response = await fetch(url);
