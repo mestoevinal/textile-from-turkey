@@ -135,14 +135,16 @@ export function ProductCard({ product }: ProductCardProps) {
             }`}>
               {product.description}
             </p>
-            {isLongDescription && (
-              <button
-                onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
-                className="text-xs text-blue-500 hover:text-blue-600 mt-1"
-              >
-                {isDescriptionExpanded ? 'Скрыть' : 'Показать полностью'}
-              </button>
-            )}
+            <div className="h-5">
+              {isLongDescription && (
+                <button
+                  onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+                  className="text-xs text-blue-500 hover:text-blue-600 mt-1"
+                >
+                  {isDescriptionExpanded ? 'Скрыть' : 'Показать полностью'}
+                </button>
+              )}
+            </div>
           </div>
         )}
         
