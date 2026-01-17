@@ -7,6 +7,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const [currentImage, setCurrentImage] = useState(0);
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const hasImages = product.images.length > 0;
   const hasMultipleImages = product.images.length > 1;
   
@@ -31,10 +32,8 @@ export function ProductCard({ product }: ProductCardProps) {
     
     if (Math.abs(distance) > minSwipeDistance) {
       if (distance > 0) {
-        // Swipe left - next image
         setCurrentImage(prev => (prev + 1) % product.images.length);
       } else {
-        // Swipe right - previous image
         setCurrentImage(prev => (prev - 1 + product.images.length) % product.images.length);
       }
     }
@@ -57,6 +56,9 @@ export function ProductCard({ product }: ProductCardProps) {
     return new Intl.NumberFormat('ru-RU').format(price);
   };
 
+  // Проверяем, длинное ли описание (больше 60 символов)
+  const isLongDescription = product.description && product.description.length > 60;
+
   return (
     <div className="bg-white rounded-2xl shadow-[0_0_10px_rgba(0,0,0,0.08)] hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100">
       {/* Image slider */}
@@ -75,7 +77,6 @@ export function ProductCard({ product }: ProductCardProps) {
               draggable={false}
             />
             
-            {/* Navigation arrows - always visible */}
             {hasMultipleImages && (
               <>
                 <button
@@ -93,7 +94,6 @@ export function ProductCard({ product }: ProductCardProps) {
               </>
             )}
             
-            {/* Dots indicator */}
             {hasMultipleImages && (
               <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 bg-black/20 backdrop-blur-sm rounded-full px-2 py-1">
                 {product.images.map((_, index) => (
@@ -129,10 +129,23 @@ export function ProductCard({ product }: ProductCardProps) {
         </h3>
         
         {product.description && (
-          <p className="text-xs sm:text-sm text-gray-500 mt-1 line-clamp-2 leading-relaxed">
-            {product.description}
-          </p>
+          <div className="mt-1">
+            <p className={`text-xs sm:text-sm text-gray-500 leading-relaxed ${
+              !isDescriptionExpanded && isLongDescription ? 'line-clamp-2' : ''
+            }`}>
+              {product.description}
+            </p>
+            {isLongDescription && (
+              <button
+                onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+                className="text-xs text-blue-500 hover:text-blue-600 mt-1"
+              >
+                {isDescriptionExpanded ? 'Скрыть' : 'Показать полностью'}
+              </button>
+            )}
+          </div>
         )}
+        
         <p className="text-base sm:text-lg font-semibold text-gray-900 mt-2">
           {formatPrice(product.price)} <span className="text-gray-400 font-normal">₽</span>
         </p>
