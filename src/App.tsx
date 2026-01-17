@@ -29,7 +29,6 @@ interface CachedData {
 
 const SHEET_ID = '1FjeC0gX-2rDkh0SX-0EVPBhCKf2Sgt3Rzw8EzE3sMc8';
 const PRODUCTS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
-// gid для листа с версией — замени на свой!
 const VERSION_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=705638294`;
 
 const CACHE_KEY = 'products_cache';
