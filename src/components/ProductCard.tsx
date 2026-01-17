@@ -130,7 +130,7 @@ export function ProductCard({ product }: ProductCardProps) {
         
         {product.description && (
           <div className="mt-1">
-            <p className={`text-xs sm:text-sm text-gray-500 leading-relaxed ${
+            <p className={`text-xs sm:text-sm text-gray-500 leading-relaxed whitespace-pre-line ${
               !isDescriptionExpanded && isLongDescription ? 'line-clamp-2' : ''
             }`}>
               {product.description}
