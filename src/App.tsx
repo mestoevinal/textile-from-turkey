@@ -43,7 +43,7 @@ function parseProducts(rawData: RawProduct[]): Product[] {
       price: Number(item.price) || 0,
       category: item.category,
       images: item.images
-        ? item.images.split('|').map(url => url.trim()).filter(Boolean)
+        ? item.images.split(/[|;]+/).map(url => url.trim()).filter(Boolean)
         : []
     }));
 }
