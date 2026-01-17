@@ -184,10 +184,13 @@ export function ProductCard({ product }: ProductCardProps) {
         <div 
           className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center animate-fadeIn"
           onClick={() => setIsModalOpen(false)}
+          onTouchStart={hasMultipleImages ? handleTouchStart : undefined}
+          onTouchMove={hasMultipleImages ? handleTouchMove : undefined}
+          onTouchEnd={hasMultipleImages ? handleTouchEnd : undefined}
         >
           <button
             onClick={() => setIsModalOpen(false)}
-            className="absolute top-4 right-4 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white text-2xl"
+            className="absolute top-4 right-4 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center text-gray-800 text-xl shadow-lg z-10"
           >
             ×
           </button>
@@ -195,34 +198,11 @@ export function ProductCard({ product }: ProductCardProps) {
           <img
             src={product.images[currentImage]}
             alt={product.name}
-            className={`max-w-[90vw] max-h-[90vh] object-contain transition-opacity duration-300 ${
+            className={`max-w-[90vw] max-h-[85vh] object-contain transition-opacity duration-300 ${
               isImageLoading ? 'opacity-0' : 'opacity-100'
             }`}
             onClick={(e) => e.stopPropagation()}
           />
-          
-          {hasMultipleImages && (
-            <>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  changeImage((currentImage - 1 + product.images.length) % product.images.length);
-                }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white text-2xl"
-              >
-                ‹
-              </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  changeImage((currentImage + 1) % product.images.length);
-                }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white text-2xl"
-              >
-                ›
-              </button>
-            </>
-          )}
           
           {hasMultipleImages && (
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
@@ -233,9 +213,9 @@ export function ProductCard({ product }: ProductCardProps) {
                     e.stopPropagation();
                     changeImage(index);
                   }}
-                  className={`w-2 h-2 rounded-full transition-all ${
+                  className={`w-2.5 h-2.5 rounded-full transition-all ${
                     index === currentImage 
-                      ? 'bg-white w-4' 
+                      ? 'bg-white w-5' 
                       : 'bg-white/50 hover:bg-white/70'
                   }`}
                 />
