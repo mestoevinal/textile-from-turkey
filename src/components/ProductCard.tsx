@@ -27,7 +27,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const handleTouchEnd = () => {
     if (!touchStartX.current || !touchEndX.current) return;
-    
+     
     const distance = touchStartX.current - touchEndX.current;
     
     if (Math.abs(distance) > minSwipeDistance) {
@@ -139,7 +139,7 @@ export function ProductCard({ product }: ProductCardProps) {
               {isLongDescription && (
                 <button
                   onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
-                  className="text-xs text-blue-500 hover:text-blue-600 mt-1"
+                  className="text-xs text-blue-500 hover:text-blue-600 mt-1 cursor-pointer"
                 >
                   {isDescriptionExpanded ? 'Скрыть' : 'Показать полностью'}
                 </button>
