@@ -192,6 +192,7 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
 
       {/* Modal */}
+      {/* Modal */}
       {isModalOpen && (
         <div 
           className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center animate-fadeIn"
@@ -215,6 +216,30 @@ export function ProductCard({ product }: ProductCardProps) {
             }`}
             onClick={(e) => e.stopPropagation()}
           />
+          
+          {hasMultipleImages && (
+            <>
+              {/* Стрелки только на десктопе */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  changeImage((currentImage - 1 + product.images.length) % product.images.length);
+                }}
+                className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 bg-white/90 hover:bg-white active:bg-gray-100 rounded-full items-center justify-center text-gray-800 text-2xl font-bold shadow-lg"
+              >
+                ‹
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  changeImage((currentImage + 1) % product.images.length);
+                }}
+                className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 bg-white/90 hover:bg-white active:bg-gray-100 rounded-full items-center justify-center text-gray-800 text-2xl font-bold shadow-lg"
+              >
+                ›
+              </button>
+            </>
+          )}
           
           {hasMultipleImages && (
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
