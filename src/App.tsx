@@ -81,6 +81,7 @@ function setCachedProducts(products: Product[]): void {
 }
 
 async function fetchProducts(): Promise<Product[]> {
+  console.log(getCachedProducts());
   // Сначала проверяем кэш
   // const cached = getCachedProducts();
   // if (cached) {
