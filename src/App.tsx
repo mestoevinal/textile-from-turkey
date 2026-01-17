@@ -48,6 +48,15 @@ function parseProducts(rawData: RawProduct[]): Product[] {
     }));
 }
 
+function preloadImages(products: Product[]): void {
+  products.forEach(product => {
+    product.images.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+  });
+}
+
 function getCachedData(): CachedData | null {
   try {
     const cached = localStorage.getItem(CACHE_KEY);
@@ -70,16 +79,13 @@ function setCachedData(products: Product[], version: string): void {
 async function fetchVersion(): Promise<string> {
   const response = await fetch(VERSION_URL);
   const text = await response.text();
-  // Парсим CSV — версия будет во второй строке (первая — заголовок)
   const lines = text.trim().split('\n');
   return lines[1]?.trim() || '';
 }
 
 async function fetchProducts(): Promise<Product[]> {
-  // 1. Получаем текущую версию с сервера
   const serverVersion = await fetchVersion();
   
-  // 2. Проверяем кэш
   const cached = getCachedData();
   if (cached && cached.version === serverVersion) {
     console.log('Используем кэш, версия:', serverVersion);
@@ -88,13 +94,11 @@ async function fetchProducts(): Promise<Product[]> {
   
   console.log('Загружаем новые данные, версия:', serverVersion);
   
-  // 3. Загружаем товары
   const response = await fetch(PRODUCTS_URL);
   const text = await response.text();
   const { data } = Papa.parse<RawProduct>(text, { header: true });
   const products = parseProducts(data);
   
-  // 4. Сохраняем в кэш с версией
   setCachedData(products, serverVersion);
   
   return products;
@@ -109,6 +113,7 @@ export function App() {
     fetchProducts()
       .then(data => {
         setProducts(data);
+        preloadImages(data);
         setLoading(false);
       })
       .catch(err => {
