@@ -24,14 +24,15 @@ interface RawProduct {
 
 interface CachedData {
   products: Product[];
-  timestamp: number;
+  version: string;
 }
 
 const SHEET_ID = '1FjeC0gX-2rDkh0SX-0EVPBhCKf2Sgt3Rzw8EzE3sMc8';
-const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
+const PRODUCTS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
+// gid для листа с версией — замени на свой!
+const VERSION_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=705638294`;
 
 const CACHE_KEY = 'products_cache';
-const CACHE_DURATION = 20 * 60 * 1000; // 10 минут в миллисекундах
 
 function parseProducts(rawData: RawProduct[]): Product[] {
   return rawData
@@ -42,60 +43,60 @@ function parseProducts(rawData: RawProduct[]): Product[] {
       description: item.description,
       price: Number(item.price) || 0,
       category: item.category,
-      images: item.images 
+      images: item.images
         ? item.images.split('|').map(url => url.trim()).filter(Boolean)
         : []
     }));
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getCachedProducts(): Product[] | null {
+function getCachedData(): CachedData | null {
   try {
     const cached = localStorage.getItem(CACHE_KEY);
     if (!cached) return null;
-    
-    const { products, timestamp }: CachedData = JSON.parse(cached);
-    const isExpired = Date.now() - timestamp > CACHE_DURATION;
-    
-    if (isExpired) {
-      localStorage.removeItem(CACHE_KEY);
-      return null;
-    }
-    
-    return products;
+    return JSON.parse(cached);
   } catch {
     return null;
   }
 }
 
-function setCachedProducts(products: Product[]): void {
+function setCachedData(products: Product[], version: string): void {
   try {
-    const data: CachedData = {
-      products,
-      timestamp: Date.now()
-    };
+    const data: CachedData = { products, version };
     localStorage.setItem(CACHE_KEY, JSON.stringify(data));
   } catch {
-    // localStorage может быть недоступен или переполнен
+    // localStorage может быть недоступен
   }
 }
 
+async function fetchVersion(): Promise<string> {
+  const response = await fetch(VERSION_URL);
+  const text = await response.text();
+  // Парсим CSV — версия будет во второй строке (первая — заголовок)
+  const lines = text.trim().split('\n');
+  return lines[1]?.trim() || '';
+}
+
 async function fetchProducts(): Promise<Product[]> {
-  console.log(getCachedProducts());
-  // Сначала проверяем кэш
-  // const cached = getCachedProducts();
-  // if (cached) {
-  //   return cached;
-  // }
+  // 1. Получаем текущую версию с сервера
+  const serverVersion = await fetchVersion();
   
-  // Если кэша нет или устарел — загружаем
-  const response = await fetch(url);
+  // 2. Проверяем кэш
+  const cached = getCachedData();
+  if (cached && cached.version === serverVersion) {
+    console.log('Используем кэш, версия:', serverVersion);
+    return cached.products;
+  }
+  
+  console.log('Загружаем новые данные, версия:', serverVersion);
+  
+  // 3. Загружаем товары
+  const response = await fetch(PRODUCTS_URL);
   const text = await response.text();
   const { data } = Papa.parse<RawProduct>(text, { header: true });
   const products = parseProducts(data);
   
-  // Сохраняем в кэш
-  setCachedProducts(products);
+  // 4. Сохраняем в кэш с версией
+  setCachedData(products, serverVersion);
   
   return products;
 }
