@@ -121,6 +121,8 @@ function AdminDashboard({ session }: { session: Session }) {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [filterCategory, setFilterCategory] = useState('');
+  const [publishing, setPublishing] = useState(false);
+  const [publishedAt, setPublishedAt] = useState<string | null>(null);
 
   useEffect(() => {
     loadProducts();
@@ -142,6 +144,22 @@ function AdminDashboard({ session }: { session: Session }) {
 
   async function handleLogout() {
     await supabase.auth.signOut();
+  }
+
+  async function handlePublish() {
+    setPublishing(true);
+    const newVersion = String(Date.now());
+    const { error } = await supabase
+      .from('settings')
+      .update({ value: newVersion })
+      .eq('key', 'cache_version');
+
+    if (!error) {
+      setPublishedAt(new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }));
+    } else {
+      alert('Не удалось опубликовать изменения. Попробуйте снова.');
+    }
+    setPublishing(false);
   }
 
   async function handleDelete(id: string) {
@@ -184,9 +202,23 @@ function AdminDashboard({ session }: { session: Session }) {
             <h1 className="text-lg font-bold text-gray-800">Панель управления</h1>
             <p className="text-xs text-gray-400">{session.user.email}</p>
           </div>
-          <button onClick={handleLogout} className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
-            Выйти
-          </button>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              {publishedAt && (
+                <span className="text-xs text-gray-400">Опубликовано в {publishedAt}</span>
+              )}
+              <button
+                onClick={handlePublish}
+                disabled={publishing}
+                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl text-sm transition-colors disabled:opacity-50"
+              >
+                {publishing ? 'Публикация...' : 'Опубликовать изменения'}
+              </button>
+            </div>
+            <button onClick={handleLogout} className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
+              Выйти
+            </button>
+          </div>
         </div>
       </div>
 

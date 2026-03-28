@@ -14,16 +14,47 @@ export interface Product {
   images: string[];
 }
 
-function preloadImages(products: Product[]): void {
-  products.forEach(product => {
-    product.images.forEach(src => {
-      const img = new Image();
-      img.src = src;
-    });
-  });
+interface Cache {
+  version: string;
+  products: Product[];
 }
 
-async function fetchProducts(): Promise<Product[]> {
+const CACHE_KEY = 'products_cache';
+
+function getCache(): Cache | null {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function setCache(version: string, products: Product[]): void {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ version, products }));
+  } catch {
+    // localStorage может быть недоступен
+  }
+}
+
+async function loadProducts(): Promise<Product[]> {
+  // Получаем версию кэша из базы (лёгкий запрос)
+  const { data: settingsData } = await supabase
+    .from('settings')
+    .select('value')
+    .eq('key', 'cache_version')
+    .single();
+
+  const serverVersion = settingsData?.value ?? '1';
+  const cache = getCache();
+
+  // Если версия совпадает — отдаём кэш, в базу не лезем
+  if (cache && cache.version === serverVersion) {
+    return cache.products;
+  }
+
+  // Версия изменилась — загружаем свежие товары
   const { data, error } = await supabase
     .from('products')
     .select('*')
@@ -32,10 +63,22 @@ async function fetchProducts(): Promise<Product[]> {
 
   if (error) throw error;
 
-  return (data ?? []).map(row => ({
+  const products: Product[] = (data ?? []).map(row => ({
     ...row,
     images: row.images ?? [],
   }));
+
+  setCache(serverVersion, products);
+  return products;
+}
+
+function preloadImages(products: Product[]): void {
+  products.forEach(product => {
+    product.images.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+  });
 }
 
 function CatalogShell({
@@ -72,7 +115,7 @@ export function App() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchProducts()
+    loadProducts()
       .then(data => {
         setProducts(data);
         preloadImages(data);
