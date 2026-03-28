@@ -16,6 +16,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
   const minSwipeDistance = 50;
+  const changeImageTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -44,12 +45,19 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   const changeImage = (newIndex: number) => {
+    if (changeImageTimer.current) clearTimeout(changeImageTimer.current);
     setIsImageLoading(true);
-    setTimeout(() => {
+    changeImageTimer.current = setTimeout(() => {
       setCurrentImage(newIndex);
       setIsImageLoading(false);
     }, 150);
   };
+
+  useEffect(() => {
+    return () => {
+      if (changeImageTimer.current) clearTimeout(changeImageTimer.current);
+    };
+  }, []);
 
   const nextImage = (e: React.MouseEvent) => {
     e.stopPropagation();
