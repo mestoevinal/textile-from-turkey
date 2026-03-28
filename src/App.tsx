@@ -1,8 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import Papa from 'papaparse';
+import { supabase } from './lib/supabase';
 import { HomePage } from './pages/HomePage';
 import { CategoryPage } from './pages/CategoryPage';
+import { AdminPage } from './pages/AdminPage';
 
 export interface Product {
   id: string;
@@ -11,41 +12,6 @@ export interface Product {
   price: number;
   category: string;
   images: string[];
-}
-
-interface RawProduct {
-  id: string;
-  name: string;
-  description: string;
-  price: string;
-  category: string;
-  images: string;
-}
-
-interface CachedData {
-  products: Product[];
-  version: string;
-}
-
-const SHEET_ID = '1FjeC0gX-2rDkh0SX-0EVPBhCKf2Sgt3Rzw8EzE3sMc8';
-const PRODUCTS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
-const VERSION_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=705638294`;
-
-const CACHE_KEY = 'products_cache';
-
-function parseProducts(rawData: RawProduct[]): Product[] {
-  return rawData
-    .filter(item => item.id)
-    .map(item => ({
-      id: item.id,
-      name: item.name,
-      description: item.description,
-      price: Number(item.price) || 0,
-      category: item.category,
-      images: item.images
-        ? item.images.split(/[|;]+/).map(url => url.trim()).filter(Boolean)
-        : []
-    }));
 }
 
 function preloadImages(products: Product[]): void {
@@ -57,51 +23,47 @@ function preloadImages(products: Product[]): void {
   });
 }
 
-function getCachedData(): CachedData | null {
-  try {
-    const cached = localStorage.getItem(CACHE_KEY);
-    if (!cached) return null;
-    return JSON.parse(cached);
-  } catch {
-    return null;
-  }
-}
-
-function setCachedData(products: Product[], version: string): void {
-  try {
-    const data: CachedData = { products, version };
-    localStorage.setItem(CACHE_KEY, JSON.stringify(data));
-  } catch {
-    // localStorage может быть недоступен
-  }
-}
-
-async function fetchVersion(): Promise<string> {
-  const response = await fetch(VERSION_URL);
-  const text = await response.text();
-  const lines = text.trim().split('\n');
-  return lines[1]?.trim() || '';
-}
-
 async function fetchProducts(): Promise<Product[]> {
-  const serverVersion = await fetchVersion();
-  
-  const cached = getCachedData();
-  if (cached && cached.version === serverVersion) {
-    console.log('Используем кэш, версия:', serverVersion);
-    return cached.products;
-  }
-  
-  console.log('Загружаем новые данные, версия:', serverVersion);
-  
-  const response = await fetch(PRODUCTS_URL);
-  const text = await response.text();
-  const { data } = Papa.parse<RawProduct>(text, { header: true });
-  const products = parseProducts(data);
-  
-  setCachedData(products, serverVersion);
-  
-  return products;
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .order('category')
+    .order('name');
+
+  if (error) throw error;
+
+  return (data ?? []).map(row => ({
+    ...row,
+    images: row.images ?? [],
+  }));
+}
+
+function CatalogShell({
+  loading,
+  error,
+  children,
+}: {
+  loading: boolean;
+  error: string | null;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <main className="p-4 lg:p-6 max-w-7xl mx-auto">
+        {loading ? (
+          <div className="min-h-[60vh] flex items-center justify-center">
+            <div className="text-gray-500">Загрузка...</div>
+          </div>
+        ) : error ? (
+          <div className="min-h-[60vh] flex items-center justify-center">
+            <div className="text-red-500">{error}</div>
+          </div>
+        ) : (
+          children
+        )}
+      </main>
+    </div>
+  );
 }
 
 export function App() {
@@ -123,32 +85,27 @@ export function App() {
       });
   }, []);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-gray-500">Загрузка...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-red-500">{error}</div>
-      </div>
-    );
-  }
-
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-gray-50">
-        <main className="p-4 lg:p-6 max-w-7xl mx-auto">
-          <Routes>
-            <Route path="/" element={<HomePage products={products} />} />
-            <Route path="/category/:categoryName" element={<CategoryPage products={products} />} />
-          </Routes>
-        </main>
-      </div>
+      <Routes>
+        <Route path="/admin" element={<AdminPage />} />
+        <Route
+          path="/"
+          element={
+            <CatalogShell loading={loading} error={error}>
+              <HomePage products={products} />
+            </CatalogShell>
+          }
+        />
+        <Route
+          path="/category/:categoryName"
+          element={
+            <CatalogShell loading={loading} error={error}>
+              <CategoryPage products={products} />
+            </CatalogShell>
+          }
+        />
+      </Routes>
     </BrowserRouter>
   );
 }

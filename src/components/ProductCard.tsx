@@ -192,7 +192,6 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
 
       {/* Modal */}
-      {/* Modal */}
       {isModalOpen && (
         <div 
           className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center animate-fadeIn"

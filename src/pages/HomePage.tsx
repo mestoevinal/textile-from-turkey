@@ -14,7 +14,10 @@ export function HomePage({ products }: HomePageProps) {
   return (
     <div>
       <h1 className="text-2xl font-bold text-gray-800 mb-6">Каталог</h1>
-      
+
+      {categories.length === 0 ? (
+        <p className="text-gray-400">Товары пока не добавлены</p>
+      ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {categories.map(category => (
           <Link
@@ -31,6 +34,7 @@ export function HomePage({ products }: HomePageProps) {
           </Link>
         ))}
       </div>
+      )}
     </div>
   );
 }
