@@ -104,7 +104,7 @@ function LoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 bg-gray-800 hover:bg-gray-900 text-white font-medium rounded-xl transition-colors text-sm disabled:opacity-50"
+            className="w-full py-2.5 bg-gray-800 hover:bg-gray-900 text-white font-medium rounded-xl transition-colors text-sm disabled:opacity-50 cursor-pointer"
           >
             {loading ? 'Вход...' : 'Войти'}
           </button>
@@ -210,12 +210,12 @@ function AdminDashboard({ session }: { session: Session }) {
               <button
                 onClick={handlePublish}
                 disabled={publishing}
-                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl text-sm transition-colors disabled:opacity-50"
+                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl text-sm transition-colors disabled:opacity-50 cursor-pointer"
               >
                 {publishing ? 'Публикация...' : 'Опубликовать изменения'}
               </button>
             </div>
-            <button onClick={handleLogout} className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
+            <button onClick={handleLogout} className="text-sm text-gray-500 hover:text-gray-700 transition-colors cursor-pointer">
               Выйти
             </button>
           </div>
@@ -226,7 +226,7 @@ function AdminDashboard({ session }: { session: Session }) {
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <button
             onClick={openAdd}
-            className="px-4 py-2.5 bg-gray-800 hover:bg-gray-900 text-white font-medium rounded-xl text-sm transition-colors"
+            className="px-4 py-2.5 bg-gray-800 hover:bg-gray-900 text-white font-medium rounded-xl text-sm transition-colors cursor-pointer"
           >
             + Добавить товар
           </button>
@@ -274,10 +274,10 @@ function AdminDashboard({ session }: { session: Session }) {
                       <td className="px-4 py-3 text-gray-400">{product.images.length} шт.</td>
                       <td className="px-4 py-3">
                         <div className="flex gap-2 justify-end">
-                          <button onClick={() => openEdit(product)} className="text-blue-500 hover:text-blue-600 text-sm transition-colors">
+                          <button onClick={() => openEdit(product)} className="text-blue-500 hover:text-blue-600 text-sm transition-colors cursor-pointer">
                             Изменить
                           </button>
-                          <button onClick={() => setDeletingId(product.id)} className="text-red-400 hover:text-red-500 text-sm transition-colors">
+                          <button onClick={() => setDeletingId(product.id)} className="text-red-400 hover:text-red-500 text-sm transition-colors cursor-pointer">
                             Удалить
                           </button>
                         </div>
@@ -300,8 +300,8 @@ function AdminDashboard({ session }: { session: Session }) {
                       </p>
                     </div>
                     <div className="flex gap-3 shrink-0">
-                      <button onClick={() => openEdit(product)} className="text-blue-500 text-sm">Изменить</button>
-                      <button onClick={() => setDeletingId(product.id)} className="text-red-400 text-sm">Удалить</button>
+                      <button onClick={() => openEdit(product)} className="text-blue-500 text-sm cursor-pointer">Изменить</button>
+                      <button onClick={() => setDeletingId(product.id)} className="text-red-400 text-sm cursor-pointer">Удалить</button>
                     </div>
                   </div>
                 </div>
@@ -328,13 +328,13 @@ function AdminDashboard({ session }: { session: Session }) {
             <div className="flex gap-3">
               <button
                 onClick={() => handleDelete(deletingId)}
-                className="flex-1 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm font-medium transition-colors"
+                className="flex-1 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm font-medium transition-colors cursor-pointer"
               >
                 Удалить
               </button>
               <button
                 onClick={() => setDeletingId(null)}
-                className="flex-1 py-2 border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl text-sm font-medium transition-colors"
+                className="flex-1 py-2 border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl text-sm font-medium transition-colors cursor-pointer"
               >
                 Отмена
               </button>
@@ -412,7 +412,7 @@ function ImageUploader({
               <button
                 type="button"
                 onClick={() => removeImage(index)}
-                className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
               >
                 ×
               </button>
@@ -434,7 +434,7 @@ function ImageUploader({
         type="button"
         onClick={() => fileInputRef.current?.click()}
         disabled={uploading}
-        className="w-full py-3 border-2 border-dashed border-gray-200 rounded-xl text-sm text-gray-400 hover:border-gray-300 hover:text-gray-500 transition-colors disabled:opacity-50"
+        className="w-full py-3 border-2 border-dashed border-gray-200 rounded-xl text-sm text-gray-400 hover:border-gray-300 hover:text-gray-500 transition-colors disabled:opacity-50 cursor-pointer"
       >
         {uploading ? 'Загрузка...' : '+ Загрузить фото'}
       </button>
@@ -521,7 +521,7 @@ function ProductFormModal({
           </h2>
           <button
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 transition-colors"
+            className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
           >
             ×
           </button>
@@ -587,14 +587,14 @@ function ProductFormModal({
             <button
               type="submit"
               disabled={saving}
-              className="flex-1 py-2.5 bg-gray-800 hover:bg-gray-900 text-white font-medium rounded-xl text-sm transition-colors disabled:opacity-50"
+              className="flex-1 py-2.5 bg-gray-800 hover:bg-gray-900 text-white font-medium rounded-xl text-sm transition-colors disabled:opacity-50 cursor-pointer"
             >
               {saving ? 'Сохранение...' : isEdit ? 'Сохранить' : 'Добавить'}
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-2.5 border border-gray-200 text-gray-700 hover:bg-gray-50 font-medium rounded-xl text-sm transition-colors"
+              className="flex-1 py-2.5 border border-gray-200 text-gray-700 hover:bg-gray-50 font-medium rounded-xl text-sm transition-colors cursor-pointer"
             >
               Отмена
             </button>
