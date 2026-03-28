@@ -501,9 +501,19 @@ function ProductFormModal({
       images: form.images,
     };
 
+    let newId: string | undefined;
+    if (!isEdit) {
+      const { data: existing } = await supabase.from('products').select('id');
+      const maxNum = (existing ?? []).reduce((max, p) => {
+        const n = parseInt(p.id, 10);
+        return isNaN(n) ? max : Math.max(max, n);
+      }, 0);
+      newId = String(maxNum + 1);
+    }
+
     const { data, error } = isEdit
       ? await supabase.from('products').update(payload).eq('id', product.id).select().single()
-      : await supabase.from('products').insert({ id: generateId(), ...payload }).select().single();
+      : await supabase.from('products').insert({ id: newId, ...payload }).select().single();
 
     if (error) {
       setError(error.message);
