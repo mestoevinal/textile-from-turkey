@@ -123,6 +123,7 @@ function AdminDashboard({ session }: { session: Session }) {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [filterCategory, setFilterCategory] = useState('');
+  const [searchId, setSearchId] = useState('');
   const [publishing, setPublishing] = useState(false);
   const [publishedAt, setPublishedAt] = useState<string | null>(null);
 
@@ -194,7 +195,11 @@ function AdminDashboard({ session }: { session: Session }) {
   }
 
   const categories = [...new Set(products.map(p => p.category))].sort();
-  const filtered = filterCategory ? products.filter(p => p.category === filterCategory) : products;
+  const filtered = products.filter(p => {
+    if (filterCategory && p.category !== filterCategory) return false;
+    if (searchId && !p.id.toLowerCase().includes(searchId.toLowerCase())) return false;
+    return true;
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -232,6 +237,12 @@ function AdminDashboard({ session }: { session: Session }) {
           >
             + Добавить товар
           </button>
+          <input
+            value={searchId}
+            onChange={e => setSearchId(e.target.value)}
+            placeholder="Поиск по ID..."
+            className="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+          />
           <select
             value={filterCategory}
             onChange={e => setFilterCategory(e.target.value)}
@@ -256,24 +267,34 @@ function AdminDashboard({ session }: { session: Session }) {
               <table className="w-full text-sm">
                 <thead className="bg-gray-50 border-b border-gray-100">
                   <tr>
+                    <th className="text-left px-4 py-3 font-medium text-gray-600">Фото</th>
                     <th className="text-left px-4 py-3 font-medium text-gray-600">ID</th>
                     <th className="text-left px-4 py-3 font-medium text-gray-600">Название</th>
                     <th className="text-left px-4 py-3 font-medium text-gray-600">Категория</th>
                     <th className="text-left px-4 py-3 font-medium text-gray-600">Цена</th>
-                    <th className="text-left px-4 py-3 font-medium text-gray-600">Фото</th>
                     <th className="px-4 py-3"></th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
                   {filtered.map(product => (
                     <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-4 py-3">
+                        {product.images.length > 0 ? (
+                          <img
+                            src={proxyImageUrl(product.images[0])}
+                            alt=""
+                            className="w-10 h-10 object-cover rounded-lg"
+                          />
+                        ) : (
+                          <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-gray-300 text-xs">—</div>
+                        )}
+                      </td>
                       <td className="px-4 py-3 text-gray-400 font-mono text-xs">{product.id}</td>
                       <td className="px-4 py-3 font-medium text-gray-800">{product.name}</td>
                       <td className="px-4 py-3 text-gray-500">{product.category}</td>
                       <td className="px-4 py-3 text-gray-800">
                         {new Intl.NumberFormat('ru-RU').format(product.price)} ₽
                       </td>
-                      <td className="px-4 py-3 text-gray-400">{product.images.length} шт.</td>
                       <td className="px-4 py-3">
                         <div className="flex gap-2 justify-end">
                           <button onClick={() => openEdit(product)} className="text-blue-500 hover:text-blue-600 text-sm transition-colors cursor-pointer">
@@ -294,6 +315,15 @@ function AdminDashboard({ session }: { session: Session }) {
               {filtered.map(product => (
                 <div key={product.id} className="p-4">
                   <div className="flex items-start justify-between gap-2">
+                    {product.images.length > 0 ? (
+                      <img
+                        src={proxyImageUrl(product.images[0])}
+                        alt=""
+                        className="w-12 h-12 object-cover rounded-lg shrink-0"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-300 text-xs shrink-0">—</div>
+                    )}
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-gray-800 text-sm truncate">{product.name}</p>
                       <p className="text-xs text-gray-400 mt-0.5">{product.category} · #{product.id}</p>
