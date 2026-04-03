@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Session } from '@supabase/supabase-js';
-import { supabase } from '../lib/supabase';
+import { supabase, proxyImageUrl } from '../lib/supabase';
 import type { Product } from '../App';
 
 interface ProductForm {
@@ -407,7 +407,7 @@ function ImageUploader({
           {images.map((url, index) => (
             <div key={index} className="relative group aspect-square">
               <img
-                src={url}
+                src={proxyImageUrl(url)}
                 alt=""
                 className="w-full h-full object-cover rounded-xl border border-gray-200"
               />

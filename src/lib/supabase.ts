@@ -8,3 +8,10 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+const DIRECT_SUPABASE_HOST = 'https://xunbfndvinjlpjmrtdhz.supabase.co';
+const PROXIED_SUPABASE_HOST = `${supabaseUrl}`;
+
+export function proxyImageUrl(url: string): string {
+  return url.replace(DIRECT_SUPABASE_HOST, PROXIED_SUPABASE_HOST);
+}

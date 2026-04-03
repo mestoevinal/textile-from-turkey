@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { supabase } from './lib/supabase';
+import { supabase, proxyImageUrl } from './lib/supabase';
 import { HomePage } from './pages/HomePage';
 import { CategoryPage } from './pages/CategoryPage';
 import { AdminPage } from './pages/AdminPage';
@@ -76,7 +76,7 @@ function preloadImages(products: Product[]): void {
   products.forEach(product => {
     product.images.forEach(src => {
       const img = new Image();
-      img.src = src;
+      img.src = proxyImageUrl(src);
     });
   });
 }

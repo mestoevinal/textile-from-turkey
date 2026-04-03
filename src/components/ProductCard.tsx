@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import type { Product } from '../App';
+import { proxyImageUrl } from '../lib/supabase';
 
 interface ProductCardProps {
   product: Product;
@@ -101,7 +102,7 @@ export function ProductCard({ product }: ProductCardProps) {
           {hasImages ? (
             <>
               <img
-                src={product.images[currentImage]}
+                src={proxyImageUrl(product.images[currentImage])}
                 alt={product.name}
                 className={`w-full h-full object-cover select-none transition-opacity duration-300 ${
                   isImageLoading ? 'opacity-0' : 'opacity-100'
@@ -216,7 +217,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </button>
           
           <img
-            src={product.images[currentImage]}
+            src={proxyImageUrl(product.images[currentImage])}
             alt={product.name}
             className={`max-w-[90vw] max-h-[85vh] object-contain transition-opacity duration-300 ${
               isImageLoading ? 'opacity-0' : 'opacity-100'
